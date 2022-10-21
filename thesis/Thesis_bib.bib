@@ -38,3 +38,22 @@ pages="226--229",
 abstract="The Spatter Code is a high-dimensional (e.g., N=10,000), random code that encodes ``high-level concepts'' in tenns of their ``low-level attributes'' so that concepts at different levels can be mixed freely. The binary spatter code is the simplest. It has two N-bit codewords for each concept or item, a ``high-level,'' or dense, word with many randomly placed Is and a ``low-level,'' or sparse, word with a few (that are contained in the many). The dense codewords can be used as inputs to an associative memory. The sparse codewords are used in encoding new concepts. When several items (attributes, concepts, chunks) are combined to form a new item, the two codewords for the new item are made from the sparse codewords of its constituents as follows: the new dense word is the logical OR of the constiblents (i.e., their sum thresholded at 0.5), and the new sparse word has Is where the constiblent words overlap (i.e., their sum thresholded at 1.5). When the parameters for the code are chosen properly, the number of Is in the codewords is maintained as new items are encoded from combinations of old ones.",
 isbn="978-1-4471-2097-1"
 }
+@article{binBund,
+author = {Schmuck, Manuel and Benini, Luca and Rahimi, Abbas},
+title = {Hardware Optimizations of Dense Binary Hyperdimensional Computing: Rematerialization of Hypervectors, Binarized Bundling, and Combinational Associative Memory},
+year = {2019},
+issue_date = {October 2019},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {15},
+number = {4},
+issn = {1550-4832},
+url = {https://doi.org/10.1145/3314326},
+doi = {10.1145/3314326},
+abstract = {Brain-inspired hyperdimensional (HD) computing models neural activity patterns of the very size of the brain’s circuits with points of a hyperdimensional space, that is, with hypervectors. Hypervectors are D-dimensional (pseudo)random vectors with independent and identically distributed (i.i.d.) components constituting ultra-wide holographic words: D=10,000 bits, for instance. At its very core, HD computing manipulates a set of seed hypervectors to build composite hypervectors representing objects of interest. It demands memory optimizations with simple operations for an efficient hardware realization. In this article, we propose hardware techniques for optimizations of HD computing, in a synthesizable open-source VHDL library, to enable co-located implementation of both learning and classification tasks on only a small portion of Xilinx UltraScale FPGAs: (1) We propose simple logical operations to rematerialize the hypervectors on the fly rather than loading them from memory. These operations massively reduce the memory footprint by directly computing the composite hypervectors whose individual seed hypervectors do not need to be stored in memory. (2) Bundling a series of hypervectors over time requires a multibit counter per every hypervector component. We instead propose a binarized back-to-back bundling without requiring any counters. This truly enables on-chip learning with minimal resources as every hypervector component remains binary over the course of training to avoid otherwise multibit components. (3) For every classification event, an associative memory is in charge of finding the closest match between a set of learned hypervectors and a query hypervector by using a distance metric. This operator is proportional to hypervector dimension (D), and hence may take O(D) cycles per classification event. Accordingly, we significantly improve the throughput of classification by proposing associative memories that steadily reduce the latency of classification to the extreme of a single cycle. (4) We perform a design space exploration incorporating the proposed techniques on FPGAs for a wearable biosignal processing application as a case study. Our techniques achieve up to 2.39\texttimes{} area saving, or 2,337\texttimes{} throughput improvement. The Pareto optimal HD architecture is mapped on only 18,340 configurable logic blocks (CLBs) to learn and classify five hand gestures using four electromyography sensors.},
+journal = {J. Emerg. Technol. Comput. Syst.},
+month = {oct},
+articleno = {32},
+numpages = {25},
+keywords = {Hyperdimensional computing, single-cycle associative memory, binarized temporal bundling, electromyography, biosignals, on-chip learning, FPGA, rematerialization}
+}
