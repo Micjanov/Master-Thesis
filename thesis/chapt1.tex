@@ -3,27 +3,27 @@
 
 %% Introduction
 %%%%%%%%%%%%%%%
-\section*{Digital biology, protein sequence research and traditional bioninformatics tools}
+\section{Digital biology, protein sequence research and traditional bioninformatics tools}
 
-\section*{State-of-the-art, deep learning and protein language modeling}
+\section{State-of-the-art, deep learning and protein language modeling}
 
-\section*{Hyperdimensional computing}
-Hyperdimensional computing is a relatively new paradigm of computing developed by Kanerva. \cite{Kanerva2009} that tries to mimick the workings of a (human) brain by computing with vectors of tens of thousands elements long, so in the realm of hyperdimensionality. The human brain consists of about 100 billion neurons (nerve cells) and 1000 trillion synapes that connect these neurons. Each neuron is connected up to 10000 other neurons, creating massive circuits. This is likely fundamental to the workings of the human brain and what seperates our brains from modern  von Neumann computer architectures which operate on 8 to 64 bit vectors. This becomes clear when we compare the relative simplicity for a human to learn a language compared to computers which require a large and complecated set of arithmetic operations in the form of deep learning networks together with terabytes of data and thousands of Watts of compute power to try to come close mastering a language whilst a human can recognize other languages relatively easy when they don't even speak it. Likewise languages, we can very easily memorize and compare other intrisically complex and contextual concepts such as images. A computer would have a hard time finding similarity between a set of images and faces because this requires very complex machine learning models. The human brain can do this all with a huge efficiency by uconsuming only roughly 20 W of energy.
+\section{Hyperdimensional computing}
+Hyperdimensional computing is a relatively new paradigm of computing developed by Kanerva.\cite{Kanerva2009} that tries to mimick the workings of a (human) brain by computing with vectors of tens of thousands elements long, so in the realm of hyperdimensionality. The human brain consists of about 100 billion neurons (nerve cells) and 1000 trillion synapes that connect these neurons. Each neuron is connected to up to 10000 other neurons, creating massive circuits. This is likely fundamental to the workings of the human brain and what separates our brains from modern von Neumann computer architectures which operate on 8 to 64-bit vectors. This becomes clear when we compare the relative simplicity for a human to learn a language compared to computers which require a large and complecated set of arithmetic operations in the form of deep learning networks together with terabytes of data and thousands of Watts of computing power to try to come close mastering a language whilst a human can recognize other languages relatively easy when they don't even speak it. Likewise languages, we can very easily memorize and compare other intrinsically complex and contextual concepts such as images. A computer would have a hard time finding similarities between a set of images and faces because this requires very complex machine-learning models. The human brain can do this all with a huge efficiency by uconsuming only roughly 20 W of energy.
 
-To achieve this kind of flexible intelligence, we might have to step away from the restrictive von Neumann architecture and so Kanerva proposes the use of hyperdimensional vectors, a different form of representation for entities by which a computer can compute with. The use of models based on high dimensionality is not entirely new and is being explored since the 1990s. Some of these earlier models include Holographic Reduced Representations \cite{HRR}, Spatter Code \cite{spatter} etc. An HDV can represent anything from a scalar number to any kind of concept. This vector is initially made up of totally random elements, but with a simple set of operations which will be explained later, we can use other vectors to combine some concepts into new similar or dissimilar concepts. For example to show the essence of HDC and how it tries to simulate the brain, we can compare the concept of a \textit{table} to the concept of a \textit{brocolli}. We would not immediately conclude that they are in any way similar but as humans we can trace back \textit{table} to \textit{plate} which has some similarities with \textit{food} from which we can easily extract the concept of \textit{brocolli}. These kind of operations are not very obvious for a classical computer but easy for us humans. 
+To achieve this kind of flexible intelligence, we might have to step away from the restrictive von Neumann architecture and so Kanerva proposes the use of hyperdimensional vectors, a different form of representation for entities by which a computer can compute with. The use of models based on high dimensionality is not entirely new and is being explored since the 1990s. Some of these earlier models include Holographic Reduced Representations~\cite{HRR}, Spatter Code~\cite{spatter} etc. An HDV can represent anything from a scalar number to any kind of concept. This vector is initially made up of totally random elements, but with a simple set of operations which will be explained later, we can use other vectors to combine some concepts into new similar or dissimilar concepts. For example, to show the essence of HDC and how it tries to simulate the brain, we can compare the concept of a \textit{table} to the concept of a \textit{brocolli}. We would not immediately conclude that they are in any way similar but as humans, we can trace back \textit{table} to \textit{plate} which has some similarities with \textit{food} from which we can easily extract the concept of \textit{brocolli}. These kinds of operations are not very obvious for a classical computer but are easy for us humans. 
 
-The elements in an HDV can be made up from binary bits like in classical computing but also of bipolar or real numbers. The choice of the nature of the elements has also implications on the nature of the different operations and on the results. Highly efficient bit operations could be used on binary vectors but then the amount of information stored in such a vector would be drastically lessened compared to bipolar or real vectors, leading to a lower accuracy.  
+The elements in an HDV can be made up of binary bits like in classical computing but also of bipolar or real numbers. The choice of the nature of the elements has also implications on the nature of the different operations and the results. Highly efficient bit operations could be used on binary vectors but then the amount of information stored in such a vector would be drastically lessened compared to bipolar or real vectors, leading to lower accuracy.  
 
-An initial HDV is made up totally random. This \textit{holistic} or \textit{holographic} representation of a concept smeared out over a vector consisting of thousands of bits gives rise to interesting properties such as its robustness. These kind of systems are very tolerant to noise and failure of bits since we introduce a lot of redundancy in the vector just by stochastics. This is very unlike classical computing where every bit counts and one failure in a bit can lead to disasters. 
-\subsection*{Operations on hyperdimensional vectors}
+An initial HDV is made up totally random. This \textit{holistic} or \textit{holographic} representation of a concept smeared out over a vector consisting of thousands of bits gives rise to interesting properties such as its robustness. These kinds of systems are very tolerant to noise and failure of bits since we introduce a lot of redundancy in the vector just by stochastics. This is very unlike classical computing where every bit counts and one failure in a bit can lead to disasters. 
+\subsection{Operations on hyperdimensional vectors}
 The interesting properties of HDC are based on only four basic operations we can perform on HDVs. We will discuss these for bipolar and binary vectors.
-\subsubsection*{Addition}
-Also referred to as \textit{bundling}, the element-wise addition as in equation \ref{eqn:sum} of $n$ input vectors $\{X_{1} + X_{2} + \cdots + X_{n}\}$ creates a vector $X$ that is maximally similar to the input vectors.
+\subsubsection{Addition} \label{sssec:add}
+Also referred to as \textit{bundling}, the element-wise addition as in equation~\ref{eqn:sum} of $n$ input vectors $\{X_{1} + X_{2} + \cdots + X_{n}\}$ creates a vector $X$ that is maximally similar to the input vectors.
 \begin{equation}
     \label{eqn:sum}
     X = X_{1} + X_{2} + \cdots + X_{n}
 \end{equation}
-For bipolar vectors this is straightforward. The input vectors are added element-wise but the resulting vector is restricted to a bipolar nature too, thus to contain only $-1$, $1$ and allowing $0$ for elements that are in disagreement as shown in the following $6$-dimensional example.
+For bipolar vectors this is straightforward. The input vectors are added element-wise but the resulting vector is restricted to a bipolar nature too depending on the sign of each element, thus containing only $-1$, $1$ but allowing $0$ for elements that are in disagreement as shown in the following $6$-dimensional example.
 \begin{alignat*}{7}
     X_{1} &= && \qquad +1 && \qquad -1 && \qquad +1 && \qquad +1 && \qquad -1 && \qquad -1 \\
     X_{2} &= && \qquad +1 && \qquad +1 && \qquad +1 && \qquad -1 && \qquad -1 && \qquad -1 \\
@@ -32,6 +32,33 @@ For bipolar vectors this is straightforward. The input vectors are added element
     \hline
     X_{1} + X_{2} + X_{3} + X_{4} &= && \qquad \phantom{-}0 && \qquad -1 && \qquad +1 && \qquad +1 && \qquad -1 && \qquad \phantom{-}0
 \end{alignat*}
-For binary vectors, the vectors are element-wise bundled based on the majority element. This is no problem if an odd number of input vectors are considered but ambiguity rises when bundling an even set of vectors. This can be solved by setting the element in question randomly. \cite{binBund} Another possibility is to add another random vector however this may seem to add the most noise, especially when bundling a low number of vectors.
-\subsubsection*{Multiplication}
-Also referred to as \textit{binding}, we can element-wise multiply two vectors resulting in a vector maximally dissimilar to the input vectors. Vectors $X$ and $Y$ are bound together forming $Z = X * Y$ with $Z$ being orthogonal to $X$ and $Y$. This \textit{binding} operation translates to a simple arthmetic element-wise multiplication for bipolar vectors. For binary vectors this represents a \textit{XOR} bit-operation shown as follows.
+For binary vectors, the vectors are element-wise bundled based on the majority element. This is no problem if an odd number of input vectors are considered but ambiguity rises when bundling an even set of vectors. This can be solved by setting the element in question randomly.~\cite{binBund} Another possibility is to add another random vector however this may seem to add the most noise, especially when bundling a low number of vectors. We can also reverse operation by an \textit{inverse addition}. For bipolar vectors, this means just multiplying the vector of interest by -1. A binary vector can be flipped bit-wise.
+
+Likewise an ordinary arirhmetic summation, the bundling addition of hyperdimensional vectors is commutative so the result is not dependent on the order of addition.
+\begin{equation}
+    \label{eqn:sumcom}
+    X_{1} + X_{2} = X = X_{2} + X_{1}
+\end{equation}
+\subsubsection{Multiplication}
+Also referred to as \textit{binding}, we can element-wise multiply two vectors resulting in a vector maximally dissimilar to the input vectors. Vectors $X$ and $Y$ are bound together forming $Z$ being orthogonal to $X$ and $Y$ as shown in equation~\ref{eqn:multp}.
+\begin{equation}
+    \label{eqn:multp}
+    Z = X * Y
+\end{equation}
+This \textit{binding} operation translates to a simple arthmetic element-wise multiplication for bipolar vectors. For binary vectors this represents a \textit{XOR} bit-operation shown as follows.
+\begin{alignat*}{7}
+    X &= && \qquad 1 && \qquad 0 && \qquad 1 && \qquad 1 && \qquad 0 && \qquad 0 \\
+    Y &= && \qquad 1 && \qquad 1 && \qquad 0 && \qquad 1 && \qquad 0 && \qquad 1 \\
+    \hline
+    X * Y &= && \qquad 0 && \qquad 1 && \qquad 1 &&  \qquad 0 && \qquad 0 && \qquad 1 \phantom{-}0
+\end{alignat*}
+This operation can also be undone by multiplying with the same vector again. It is its own inverse so that
+\begin{equation}
+    \label{eqn:multpinv}
+    A * A = O \text{ where $O$ is a vector containing only 0s}
+\end{equation}
+Likewise an ordinary multiplication, this operation is distributive over addition and commutative.
+\begin{equation}
+    \label{eqn:multpdis}
+    A = Z*(X + Y) = XZ + YZ
+\end{equation}

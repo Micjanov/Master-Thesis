@@ -41,11 +41,14 @@
 \usepackage{booktabs}
 % this package is used to produce both author-date and standard numerical citations for BibTeX bibliographies
 \usepackage[round]{natbib}
+\setcitestyle{numbers}
 % This packages adds the Appendix name in the toc. See below
 \usepackage[titletoc]{appendix}
 \usepackage{mathtools}
 \usepackage{amsmath}
+\usepackage{notoccite}
 
+\setcounter{secnumdepth}{3}
 % ---- ADDITIONAL SETTINGS
 \graphicspath{{Fig/}} % path to the figure directory
 
@@ -96,7 +99,7 @@
 
 
 \addcontentsline{toc}{chapter}{Bibliography} %show bibliography in TOC
-\bibliographystyle{apalike}  %apalike,phdbib.bst
+\bibliographystyle{unsrt}  %apalike,phdbib.bst
 \bibliography{Thesis_bib}
 
 % Here you insert your appendices
