@@ -41,6 +41,7 @@ The results of both of these measurements are summarized in table~\ref{tab:dist}
     \end{tabular}
     \caption{\label{tab:dist}Overview of similarity measurements in HDC depending on the nature of the HDVs} 
 \end{table}
+It is important to note that two random HDVs will be orthogonal to each other just by stochastics.
 \subsubsection{Addition} \label{sssec:add}
 Also referred to as \textit{bundling}, the element-wise addition as in equation~\ref{eqn:sum} of $n$ input vectors $\{X_{1} + X_{2} + \cdots + X_{n}\}$ creates a vector $X$ that is maximally similar to the input vectors.
 \begin{equation}
@@ -88,3 +89,27 @@ Likewise an ordinary multiplication, this operation is commutative and distribut
 \end{equation}
 \subsubsection{Permutation} \label{sssec:perm}
 The permutation operation of an HDV, also known as \textit{shifting}, is a simple reordering of the HDV. This can be random but a circular shift is widely employed~\cite{HD_rev} and makes the operation easily reversible. This results in a vector technically dissimilar from the input vector but still encoding its information. This will become important later when it will be used to encode sequential information such as tokens in a text. This operation will be denoted by $\Pi$.
+\begin{alignat*}{7}
+    X &= && \qquad 1 && \qquad 0 && \qquad 1 && \qquad 1 && \qquad 0 && \qquad 0 \\
+    \hline
+    \Pi(X) &= && \qquad 0 && \qquad 1 && \qquad 0 &&  \qquad 1 && \qquad 1 && \qquad 0
+\end{alignat*}
+\subsection{Examples}
+There are many interesting possibilities given the relative simplicity of all these operations. We shall illustrate some applications and examples. 
+In the following example, the robustness of these hyperdimensional vectors is shown. Assume $A, B, C, X, Y, Z$ to be random 10000-dimensional hypervectors and $D = X*A + Y*B + Z*C$. We will try to retrieve A from D.
+\begin{align}
+    \label{eqn:ex1}
+    A' &= X * D \\
+    &= X * (X * A + Y * B + Z * C) \\
+    &= \underbrace{X * X * A}_A + \underbrace{X * Y * B + X * Z * C}_\text{noise} \\
+    &\approx A
+\end{align}
+This example was implemented in a Julia script, the results are illustrated in figure~\ref{fig:exm1}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale = 0.7]{showcase}
+    \caption{10000 cases of random 10000-dimensional vectors were made and each time implemented following example~\ref{eqn:ex1}. The resulting cosine similarities between $A$ and $A'$ are then plotted in a histogram.}
+    \label{fig:exm1}
+\end{figure}
+
+We see that we can retrieve a lot of information with most of the cosine similarities centering around 0.5. Notice that two completely random HDVs would have a cosine similarity of 0 just by stochastics.
