@@ -1,10 +1,10 @@
 \chapter[Introduction]%
 {Introduction}
-
 %% Introduction
 %%%%%%%%%%%%%%%
 \section{Big picture and traditional bioinformatics tools for protein research}
-Proteins are an essential part of molecular biology and are responsible for a wide variety of functions. Far too wide to discuss here because they are one of the building blocks that make up life, hence a lot of effort has gone towards trying to understand the functions of protein and disruptions in its mechanisms that lead to many kinds of diseases. To start, proteins are composed of a linear chain of amino acids (AA) with a length ranging from 50 to even tens of thousands of AAs, all connected by peptide bonds. This is also referred to as the \textit{primary structure} of a protein.\cite{primstruct} A sequence of amino acids is determined by the genetic code without considering post-translational and post-transcriptional modifications etc. In the genetic code of all living organisms, there are 20 different kinds of amino acids coded which make up the 'language' of proteins. The current state-of-the-art methods for the identification of protein sequences are \textit{de novo sequencing} algorithms applied to tandem mass spectrometry.
+Proteins are an essential part of molecular biology and are responsible for a wide variety of functions. Far too wide to discuss here because they are one of the building blocks that make up life, hence a lot of effort has gone towards trying to understand the functions of protein and disruptions in its mechanisms that lead to many kinds of diseases. To start, proteins are composed of a linear chain of amino acids (AA) with a length ranging from 50 to even tens of thousands of AAs, all connected by peptide bonds. This is also referred to as the \textit{primary structure} of a protein.\cite{primstruct} A sequence of amino acids is determined by the genetic code without considering post-translational and post-transcriptional modifications etc. In the genetic code of all living organisms, there are 20 different kinds of amino acids coded which make up the 'language' of proteins. The current state-of-the-art methods for the identification of protein sequences are \textit{de novo sequencing} algorithms applied to tandem mass spectrometry.\cite{protseq}
+A traditional task in bioinformatics and more specifically in the realm of protein sequence analyses is similarity searches.
 \section{Protein language modeling}
 
 \section{Hyperdimensional computing}
@@ -18,7 +18,7 @@ An initial HDV is made up fully randomly. This \textit{holistic} or \textit{holo
 \subsection{Operations on hyperdimensional vectors}
 The interesting properties of HDC are based on only four basic operations we can perform on HDVs. We will discuss these for bipolar and binary vectors.
 \subsubsection{Similarity measurement} \label{sssec:sim}
-For many kinds of problems, it will be necessary to quantify the similarity between two HDVs. This depends on the nature of the vectors. For binary vectors, the \textit{Hamming distance} defined as in equation~\ref{eqn: Hamming} is widely used.
+For many kinds of problems, it will be necessary to quantify the similarity between two HDVs. This depends on the nature of the vectors. For binary vectors, the \textit{Hamming distance} defined as in equation~\ref{eqn:Hamming} is widely used.
 \begin{equation}
     \label{eqn:Hamming}
     Ham(A, B) = \frac{1}{d} \sum_{i=1}^{d} 1_{A_{(i)} \neq B_{(i)}}
