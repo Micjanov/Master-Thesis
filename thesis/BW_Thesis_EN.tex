@@ -47,6 +47,8 @@
 \usepackage{amsmath}
 \usepackage{notoccite}
 \usepackage{svg}
+\usepackage{minted}
+\usepackage{newunicodechar}
 
 
 \setcounter{secnumdepth}{3}
@@ -58,7 +60,7 @@
 %
 \begin{document}
 
-\include{copyright-thesis}
+\input{copyright-thesis}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 %------------------------------------------------------------------------
@@ -66,7 +68,7 @@
 \pagestyle{frontmatter} %sets headers and footers correctly
 
 % ------------ thanks -----------
-\include{dankwoord}
+\input{dankwoord}
 
 % ------------ table of contents ---------
 {
@@ -81,8 +83,8 @@
 % ------------ Acronyms ----------
 
 % ------------ summary ----------
-\include{abstract_dutch}
-\include{abstract_english}
+\input{abstract_dutch}
+\input{abstract_english}
 
 % The following can be commented out to remove the list of figures
 % and the list of tables, as specified by the guidelines of BW
@@ -93,17 +95,14 @@
 \pagestyle{mainmatter} % sets headers and footers correctly
 
 % Here you can add more chapters in case it is needed
-\include{chapt1}
+\input{chapt1}
 % ------------ REFERENCES ------------
 % Here you have your bibliography created
-
 \addcontentsline{toc}{chapter}{Bibliography} %show bibliography in TOC
 \bibliographystyle{unsrt}  %apalike,phdbib.bst
 \bibliography{Thesis_bib}
-
 % Here you insert your appendices
 \appendix
-
 \begin{appendices}
 
 % Dit voegt het woord Bijlage toe aan de titel!
@@ -116,7 +115,7 @@
   { } %aft%after code
 
 
-\include{app1}
+\input{app1}
 
 \end{appendices}
 

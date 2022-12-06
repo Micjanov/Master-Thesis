@@ -1,0 +1,325 @@
+\chapter{Define basic operations of hyperdimensional computing}
+All provided code is written in the programming language Julia unless noted otherwise.
+\section{Binary hypervectors}
+\begin{minted}[breaklines, escapeinside=||,mathescape=true]{Julia}
+using Random
+"""
+Construct a binary vector. By default 10000 elements long.
+"""
+bitHDV(N::Int=10000) = bitrand(N)
+"""
+Bundles binary hyperdimensional vectors based on the element-wise majority rule.
+"""
+function bitadd(vectors::BitVector ...)
+    v = reduce(.+, vectors)
+    n = length(vectors) / 2
+    x = [i > n ? 1 : i < n ? 0 : rand(0:1) for i in v]
+    return convert(BitVector, x)
+end
+"""
+Binds binary hyperdimensional vectors based on an element-wise XOR gate.
+"""
+bitbind(vectors::BitVector ...) =  reduce(.|$\veebar$|, vectors)
+"""
+Permutes a binary hyperdimensional vector by an adjustable circular shift.
+"""
+bitperm(vector::BitVector, k::Int=1) = circshift(vector, k)
+"""
+Calculates the Hamming distance between two binary vectors.
+"""
+hamming(x::BitVector, y::BitVector) = sum(x .!= y)/length(x)
+\end{minted}
+\section{Bipolar hypervectors}
+\begin{minted}[breaklines]{Julia}
+using Random
+using LinearAlgebra
+"""
+Construct a bipolar vector. By default 10000 elements long.
+"""
+hdv(N::Int=10000) = rand((-1,1), 1, N)
+"""
+Bundles bipolar hyperdimensional vectors.
+"""
+add(vectors::Vector{Int}...) = reduce(.+, vectors) .|> sign
+"""
+Binds bipolar hyperdimensional vectors.
+"""
+multiply(vectors::Vector{Int}...) = reduce(.*, vectors)
+"""
+Permutes a bipolar hyperdimensional vector by an adjustable circular shift.
+"""
+perm(vector::Vector, k::Int=1) = circshift(vector, (0, k))
+"""
+Calculates the cosine similarity between two bipolar vectors.
+"""
+cosine(x::Vector{Int}, y::Vector{Int}) = dot(x, y) / (norm(x) * norm(y))
+\end{minted}
+\chapter{Examples of hyperdimensional computing on datasets}
+\section{Simple example}
+\begin{minted}[breaklines]{Julia}
+v = Vector()
+for i in 1:10000
+    a, b, c, x, y, z = bitHDV(), bitHDV(), bitHDV(), bitHDV(), bitHDV(), bitHDV()
+    d = bitadd(bitbind(a, x), bitbind(b, y), bitbind(c, z))
+    ap = bitbind(x, d)
+    score = hamming(ap, a)
+    append!(v, score)
+end
+
+using Plots
+let
+	p = histogram(v, xlims=(0,1), label="", xlabel="Hamming distance")
+end
+\end{minted}
+\section{Zoo example}
+\subsection{Data preprocessing}
+\begin{minted}[breaklines]{Julia}
+using DataFrames, CSV
+data = CSV.read("zoodata/zoo.csv", DataFrame)
+classls = data.class_type
+
+mammal_idx = [i for i in 1:101 if data.class_type[i] == 1]
+bird_idx = [i for i in 1:101 if data.class_type[i] == 2]
+reptile_idx = [i for i in 1:101 if data.class_type[i] == 3]
+fish_idx = [i for i in 1:101 if data.class_type[i] == 4]
+amphibian_idx = [i for i in 1:101 if data.class_type[i] == 5]
+bug_idx = [i for i in 1:101 if data.class_type[i] == 6]
+invertebrate_idx = [i for i in 1:101 if data.class_type[i] == 7]
+
+indices = [mammal_idx, bird_idx, reptile_idx, fish_idx, amphibian_idx, bug_idx, invertebrate_idx]
+
+legs0 = [i == 0 ? 1 : 0 for i in data.legs]
+legs2 = [i == 2 ? 1 : 0 for i in data.legs]
+legs4 = [i == 4 ? 1 : 0 for i in data.legs]
+legs5 = [i == 5 ? 1 : 0 for i in data.legs]
+legs6 = [i == 6 ? 1 : 0 for i in data.legs]
+legs8 = [i == 8 ? 1 : 0 for i in data.legs]
+
+select!(data, Not(:class_type))
+select!(data, Not(:legs))
+
+data[!, :legs0] = legs0
+data[!, :legs2] = legs2
+data[!, :legs4] = legs4
+data[!, :legs5] = legs5
+data[!, :legs6] = legs6
+data[!, :legs8] = legs8
+\end{minted}
+\subsection{Assigning HDVs to features}
+\begin{minted}[breaklines]{Julia}
+"""
+Creates a list of binary hyperdimensional vectors representing an interval of numbers by constructing a random HDV representing the lower bound of the interval and replacing a fraction of the vector with random bits.
+"""
+function range_hdvs(steps)
+	k = length(steps) - 1
+	V = [bitHDV() for i in 1:k+1]
+	for i in 2:k+1
+		for j in 1:10000
+			V[i][j] = rand(0:1)
+		end
+	end
+	return V
+end
+
+legs_steps = 0:1:8
+legs_hdvs = range_hdvs(legs_steps)
+
+feature_hdv=[bitHDV() for i in 1:15]
+append!(feature_hdv, [legs_hdvs[1], legs_hdvs[3], legs_hdvs[5], legs_hdvs[6], legs_hdvs[7], legs_hdvs[9]])
+
+growth_hdv = bitHDV()
+skin_protection = bitHDV()
+limbs = bitHDV()
+
+for i in 1:2
+    feature_hdv = replace!(feature_hdv, feature_hdv[i] => bitbind(feature_hdv[i], skin_protection))
+end
+
+for i in 3:4
+    feature_hdv = replace!(feature_hdv, feature_hdv[i] => bitbind(feature_hdv[i], growth_hdv))
+end
+
+for i in 13;16:21
+    feature_hdv = replace!(feature_hdv, feature_hdv[i] => bitbind(feature_hdv[i], limbs))
+end
+
+hdv = BitVector[]
+for i in 1:101
+    v = BitVector[]
+    for j in 2:22
+        if data[!, j][i] == 1
+            push!(v, feature_hdv[j-1])
+        end
+    end
+    x = bitadd(v...)
+    push!(hdv, x)
+end
+
+data[!, :species_hdv] = hdv
+
+function grouper(group::Int)
+    v = BitVector[]
+    for i in 1:length(indices[group])
+        push!(v, data.species_hdv[indices[group][i]])
+    end
+    x = bitadd(v...)
+    return x
+end
+
+mammal_hdv = grouper(1)
+bird_hdv = grouper(2)
+reptile_hdv = grouper(3)
+fish_hdv = grouper(4)
+amphibian_hdv = grouper(5)
+bug_hdv = grouper(6)
+invertebrate_hdv = grouper(7)
+\end{minted}
+\subsection{Data analysis}
+\begin{minted}[breaklines]{Julia}
+list_group_hdvs = [mammal_hdv, bird_hdv, reptile_hdv, fish_hdv, amphibian_hdv, bug_hdv, invertebrate_hdv]
+matrix_groups = permutedims(hcat(list_group_hdvs...))
+\end{minted}
+\textbf{\mintinline{Julia}{data.species_hdv[94]} refers to the 94th animal in the dataset, in this case that is vampire.}
+\begin{minted}[breaklines]{Julia}
+println("Similarity to mammal = ",string(hamming(data.species_hdv[94], mammal_hdv)))
+println("Similarity to bird =",string(hamming(data.species_hdv[94], bird_hdv)))
+println("Similarity to reptile =",string(hamming(data.species_hdv[94], reptile_hdv)))
+println("Similarity to amphibian =",string(hamming(data.species_hdv[94], amphibian_hdv)))
+println("Similarity to bug =",string(hamming(data.species_hdv[94], bug_hdv)))
+println("Similarity to fish =",string(hamming(data.species_hdv[94], fish_hdv)))
+println("Similarity to invertebrate =",string(hamming(data.species_hdv[94], invertebrate_hdv)))
+
+axolotl_features = [0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0]
+v = BitVector[]
+    for j in 1:16
+        if axolotl_features[j] == 1
+            push!(v, feature_hdv[j])
+        end
+    end
+    axolotl_hdv = bitadd(v...)
+
+
+using MultivariateStats
+M = fit(PCA, matrix_groups ; maxoutdim=2)
+proj = projection(M)
+
+using Plots
+function plotter()
+    colors = [:green, :orange, :blue, :red, :yellow, :purple, :black]
+    labels = ["mammal", "bird", "reptile", "fish", "amphibian", "bug", "invertebrate"]
+    fig = Plots.plot()
+
+    for i in 1:7
+        scatter!(fig, (proj[i, 1], proj[i, 2]), label=labels[i], mc = colors[i])
+    end
+    return fig
+end
+plotter()
+
+matrix_species = permutedims(hcat(hdv...))
+S = fit(PCA, matrix_species ; maxoutdim=2)
+projS = projection(S)
+
+using Plots
+function plotter()
+    colors = [:green, :orange, :blue, :red, :yellow, :purple, :black]
+    labels = ["mammal", "bird", "reptile", "fish", "amphibian", "bug", "invertebrate"]
+    fig = Plots.plot()
+
+    for i in 1:7
+        scatter!(fig, projS[indices[i], 1], projS[indices[i], 2], mc = colors[i], label=labels[i])
+    end
+    return fig
+end
+plotter()
+\end{minted}
+\section{Anticancer protein example}
+\subsection{Data preprocessing}
+\begin{minted}[breaklines]{Julia}
+using DataFrames, CSV
+data = CSV.read("ProtExdata/ACPs_Breast_cancer.csv", DataFrame)
+
+unique(data.class)
+class_num = [i == "very active" ? 1 : i == "mod. active" ? 2 : i == "inactive - exp" ? 3 : 4 for i in data.class]
+data[!, :class_num] = class_num
+\end{minted}
+\subsection{Assigning HDVs to features}
+\begin{minted}[breaklines]{Julia}
+AA_list = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V', 'O', 'U', 'B', 'J', 'Z', 'X']
+AA_hdv = [bitHDV() for i in AA_list]
+AA_dict = Dict(zip(AA_list, AA_hdv))
+
+trimer_hdvs = Dict(aa1 * aa2 * aa3 => 
+bitbind(AA_dict[aa1], bitperm(AA_dict[aa2]), bitperm(AA_dict[aa3], 2)) 
+for aa1 in AA_list for aa2 in AA_list for aa3 in AA_list)
+
+function embedder(sequence)
+    l = [trimer_hdvs[sequence[i:i+2]] for i in 1:length(sequence)-2]
+    v = bitadd(hcat(l)...)
+    return v
+end
+l = BitVector[]
+for i in data.sequence
+    push!(l, embedder(i))
+end
+data[!, :hdv] = l
+
+active_hdv = bitadd(hcat([i for i in data[data.class_num .== 1, :hdv]])...)
+modactive_hdv = bitadd(hcat([i for i in data[data.class_num .== 2, :hdv]])...)
+notactive_exp_hdv = bitadd(hcat([i for i in data[data.class_num .== 3, :hdv]])...)
+notactive_virt_hdv = bitadd(hcat([i for i in data[data.class_num .== 4, :hdv]])...)
+\end{minted}
+\subsection{Data analysis}
+\textbf{Print the similarity of the HDV of sequence "KWKLFKKILKFLHLAKKF" to every class HDV}
+\begin{minted}[breaklines]{Julia}
+println(hamming(data[data.sequence .== , :hdv]..., active_hdv))
+println(hamming(data[data.sequence .== "KWKLFKKILKFLHLAKKF", :hdv]..., modactive_hdv))
+println(hamming(data[data.sequence .== "KWKLFKKILKFLHLAKKF", :hdv]..., notactive_exp_hdv))
+println(hamming(data[data.sequence .== "KWKLFKKILKFLHLAKKF", :hdv]..., notactive_virt_hdv))
+\end{minted}
+\begin{minted}[breaklines]{Julia}
+using MultivariateStats
+
+matrix_all = permutedims(hcat(data.hdv...))
+S = fit(PCA, matrix_all; maxoutdim=2)
+projS = projection(S)
+
+indices = [[i for i in 1:nrow(data) if data.class_num[i] == j] for j in 1:4]
+
+using Plots
+function plotter()
+    colors = [:green, :black, :blue, :red]
+    labels = ["active", "mod. active", "inactive (exp)", "inactive (virt)"]
+    fig = Plots.plot()
+
+    for i in 1:4
+        scatter!(fig, (projS[indices[i], 1], projS[indices[i], 2]), label=labels[i], mc = colors[i])
+    end
+    return fig
+end
+plotter()
+\end{minted}
+\subsection{Classifier}
+\begin{minted}[breaklines]{Julia}
+n = nrow(data)
+
+train = rand(n) .< 0.8
+test = train = .! train
+
+train_df = data[[i for i in 1:n if train[i] == 1], :]
+test_df = data[[i for i in 1:n if test[i] == 1], :]
+
+active_hdv_t = bitadd(hcat([i for i in train_df[train_df.class_num .== 1, :hdv]])...)
+modactive_hdv_t = bitadd(hcat([i for i in train_df[train_df.class_num .== 2, :hdv]])...)
+notactive_exp_hdv_t = bitadd(hcat([i for i in train_df[train_df.class_num .== 3, :hdv]])...)
+notactive_virt_hdv_t = bitadd(hcat([i for i in train_df[train_df.class_num .== 4, :hdv]])...)
+
+function predict(seq)
+    y = [hamming(active_hdv_t, seq), hamming(modactive_hdv_t, seq), hamming(notactive_exp_hdv_t, seq), hamming(notactive_virt_hdv_t, seq)]
+    return findmin(y)[2]
+end
+
+using StatsBase
+pred = [predict(i) for i in test_df.hdv]
+mean(test_df.class_num .== pred)
+\end{minted}

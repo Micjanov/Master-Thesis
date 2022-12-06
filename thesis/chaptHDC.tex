@@ -56,7 +56,7 @@ Similar to an ordinary arithmetic summation, the bundling addition of hyperdimen
     X_{1} + X_{2} = X = X_{2} + X_{1}
 \end{equation}
 \subsubsection{Multiplication} \label{sssec:mult}
-Also referred to as \textit{binding}, we can element-wise multiply two vectors resulting in a vector maximally dissimilar to the input vectors. Vectors $X$ and $Y$ are bound together forming $Z$ being orthogonal to $X$ and $Y$ as shown in equation~\ref{eqn:multp}.
+Also referred to as \textit{binding}, two vectors can be multiplied element-wise resulting in a vector maximally dissimilar to the input vectors. Vectors $X$ and $Y$ are bound together forming $Z$ being orthogonal to $X$ and $Y$ as shown in equation~\ref{eqn:multp}.
 \begin{equation}
     \label{eqn:multp}
     Z = X * Y
@@ -66,7 +66,7 @@ This \textit{binding} operation translates to a simple arithmetic element-wise m
     X &= && \qquad 1 && \qquad 0 && \qquad 1 && \qquad 1 && \qquad 0 && \qquad 0 \\
     Y &= && \qquad 1 && \qquad 1 && \qquad 0 && \qquad 1 && \qquad 0 && \qquad 1 \\
     \hline
-    X * Y &= && \qquad 0 && \qquad 1 && \qquad 1 &&  \qquad 0 && \qquad 0 && \qquad 1 \phantom{-}0
+    X * Y &= && \qquad 0 && \qquad 1 && \qquad 1 &&  \qquad 0 && \qquad 0 && \qquad 1
 \end{alignat*}
 This operation can also be undone by multiplying with the same vector again. It is its own inverse so that
 \begin{equation}
@@ -86,21 +86,71 @@ The permutation operation of an HDV, also known as \textit{shifting}, is a simpl
     \Pi(X) &= && \qquad 0 && \qquad 1 && \qquad 0 &&  \qquad 1 && \qquad 1 && \qquad 0
 \end{alignat*}
 \subsection{Examples}
-There are many interesting possibilities given the relative simplicity of all these operations. We shall illustrate some applications and examples. 
-In the following example, the robustness of these hyperdimensional vectors is shown. Assume $A, B, C, X, Y, Z$ to be random 10000-dimensional bipolar hypervectors and $D = X*A + Y*B + Z*C$. We will try to retrieve A from D.
-\begin{align}
-    \label{eqn:ex1}
+There are many interesting possibilities given the relative simplicity of all these operations. We shall illustrate some applications and examples. From here, all implementations are written in the programming language Julia unless noted otherwise. All examples have been implemented with binary hyperdimensional vectors but with minimal changes, bipolar vectors could also be applied. Some key snippets of the code will be shown occasionally but to preserve the self-contatinment of this project, all source code is provided in the appendicies.
+\subsubsection{Simple example}
+To get a feel for the operations, assume $A, B, C, X, Y$ and $Z$ to be random 10000-dimensional bipolar hypervectors and that $D = X*A + Y*B + Z*C$, let us then try to retrieve A from D by using the defined operations. We generate for $A, B, C, X, Y$ and $Z$ each a random 10000-D vector \textit{via} function:
+\mint{Julia}|bitHDV(N::Int=10000) = bitrand(N)|
+To retrieve an approximation of A, D can be multiplied by X and the rest of the included vectors are then regarded as noise as done in equations~\ref{eqn:ex1}. Because of the robustness of hyperdimensional vectors, a lot of information of A should still be contained within D.
+\begin{align}\label{eqn:ex1}
+\begin{split}
     A' &= X * D \\
     &= X * (X * A + Y * B + Z * C) \\
     &= \underbrace{X * X * A}_A + \underbrace{X * Y * B + X * Z * C}_\text{noise} \\
     &\approx A
+\end{split}
 \end{align}
-This example was implemented in a Julia script, the results are illustrated in figure~\ref{fig:exm1}.
+Julia makes it possible to write incredibly efficient programs whilst still being a high-level and interpreter-based programming language including many packages suited for mathematical operations. By using Julia, the following functions are written to respectively add, multiply and compare hyperdimensional binary vectors.
+\begin{minted}[breaklines, escapeinside=||,mathescape=true]{Julia}
+function bitadd(vectors::BitVector ...)
+    v = reduce(.+, vectors)
+    n = length(vectors) / 2
+    x = [i > n ? 1 : i < n ? 0 : rand(0:1) for i in v]
+    return convert(BitVector, x)
+end
+bitbind(vectors::BitVector ...) =  reduce(.|$\veebar$|, vectors)
+hamming(x::BitVector, y::BitVector) = sum(x .!= y)/length(x)
+\end{minted}
+Lastly, the procedure of equation~\ref{eqn:ex1} is repeated 10000 times because of the stochastic nature of these vectors. The results are illustrated in figure~\ref{fig:exm1}.
+\begin{minted}[breaklines]{Julia}
+v = Vector()
+for i in 1:10000
+    a, b, c, x, y, z = bitHDV(), bitHDV(), bitHDV(), bitHDV(), bitHDV(), bitHDV()
+    d = bitadd(bitbind(a, x), bitbind(b, y), bitbind(c, z))
+    ap = bitbind(x, d)
+    score = hamming(ap, a)
+    append!(v, score)
+end
+\end{minted}
 \begin{figure}[h]
     \centering
-    \includegraphics[scale = 0.7]{showcase}
-    \caption{10000 cases of random 10000-dimensional bipolar vectors are made and each time implemented following example~\ref{eqn:ex1}. The resulting cosine similarities between $A$ and $A'$ are then plotted in a histogram.}
+    \includegraphics[scale = 0.5]{output.png}
+    \caption{10000 cases of random 10000-dimensional binary vectors are made and each time implemented following example~\ref{eqn:ex1}. The resulting Hamming distances between $A$ and $A'$ are then plotted in a histogram.}
     \label{fig:exm1}
 \end{figure}
 
-We see that we can retrieve a lot of information with most of the cosine similarities centering around 0.5. Notice that two completely random HDVs would have a cosine similarity close to 0 just by stochastics. This result is not comparable to state-of-the-art accuracies but very efficient nonetheless as all of these calculations were done in less than 2 seconds. This same experiment was done with random binary 10000-dimensional vectors and it finished even faster as expected but retained the accuracy (similar \textit{Hamming distance} peak around 0.25).
+We see that we can retrieve a lot of information with most of the Hamming distances centering around 0.25. Notice that two completely random HDVs would have a distance close to 1 just by stochastics. A cosine similarity of 1 would mean that we retrieved all bits of A correctly, which is impossible in this model due to the consideration of noise. This result is not comparable to state-of-the-art accuracies but the calculations are very efficient nonetheless as all of these calculations were done in less than 2 seconds. This same experiment was done with random bipolar 10000-dimensional vectors and it performs slightly slower as expected but retained the accuracy (similar \textit{cosine similarity} peak around 0.5).
+\subsection{Examples of hyperdimensional computing on datasets}
+Now, the power of these simple operations will be demonstrated by applying them to a couple of datasets.
+\subsubsection{Zoo animal classification}
+As the first example, we will consider a simple dataset\cite{zoo} containing 101 animals with 17 features such as their number of legs, their skin covering and other physical properties. In the end, we want to create a simple model that can classify these animals or other animals not present in the dataset. To tackle this problem, we first assign to each feature a random hyperdimensional vector. For each animal, all of its features can be bundled to obtain a final vector representing the animal. For example, it is known that a chicken lays eggs, is covered with feathers and has two legs so then these features can be bundled as in the following equation. $C$ is a vector representing a chicken, $E$ the ability to lay eggs, $F$ the possession of feathers and $T$ the possession two legs:
+\begin{equation}\label{eqn:chicken}
+    C = E + F + T
+\end{equation}
+This is simple for all the binary features but the feature for the number of legs is variable. Although it is possible to assign completely random vectors to each number of legs, it would make a slightly more biologically realistic model if an animal with 2 legs would be more similar to one with 4 legs than to one with 8 legs. To address this, a range of numbers would have to be representable by hyperdimensional vectors, the range from 0 to 8 in this case. First, a random hyperdimensional vector representing the lower bound of the interval is generated. Next, a vector representing the next step in the interval is constructed by replacing a fraction of the vector with random bits. This last step is then repeated to obtain a vector of each number in a range.
+
+To demonstrate the binding of HDVs, the types of features will be encoded into our feature set. For example, the 'milk' ($M$), and 'egg' ($E$) features give us information about the growth of the animal, so we will bind these features to another vector representing the growth feature ($G$) to obtain a more expanded model. This is also done for the skin protection features ($S$) and for all the features considering the limbs ($L$). This also gives us the possibility to retrieve some features of the animals as shown in the previous example. Thus, equation~\ref{eqn:chicken} can be expanded into:
+\begin{equation}
+    C = G*E + S*F + L*T
+\end{equation}
+After all these procedures, there are 101 animals with each a 10000-dimensional vector as a feature. To effectively analyze this data, a principal component analysis (PCA) has been applied to essentially reduce the 10000 features into 2. This projection can then be easily shown in a 2D plot, resulting in figure \ref{fig:exm2}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale = 0.5]{pca1.png}
+    \caption{Scatter-plot of the two first principal components of a 101$\times$10000 matrix containing hyperdimensional vectors for every animal in the zoo dataset after a PCA procedure.}
+    \label{fig:exm2}
+\end{figure}
+After an HDV has been made for every animal, all animals of the same class can be bundled to obtain an HDV representing the said class. So for example, if we have a hyperdimensional vector for a pigeon ($P$), chicken ($C$) and a kiwi ($K$), an HDV representing birds ($B$) can be made by doing:
+\begin{equation}
+    B = P + C + K
+\end{equation} 
+To classify an animal, its HDV can be compared to the HDVs of every class and the most similar vector is then assumed to be its class.
