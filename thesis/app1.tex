@@ -95,7 +95,6 @@ legs5 = [i == 5 ? 1 : 0 for i in data.legs]
 legs6 = [i == 6 ? 1 : 0 for i in data.legs]
 legs8 = [i == 8 ? 1 : 0 for i in data.legs]
 
-select!(data, Not(:class_type))
 select!(data, Not(:legs))
 
 data[!, :legs0] = legs0
@@ -139,16 +138,21 @@ for i in 3:4
     feature_hdv = replace!(feature_hdv, feature_hdv[i] => bitbind(feature_hdv[i], growth_hdv))
 end
 
-for i in 13;16:21
+for i in 12:13;16:21
     feature_hdv = replace!(feature_hdv, feature_hdv[i] => bitbind(feature_hdv[i], limbs))
 end
 
 hdv = BitVector[]
 for i in 1:101
     v = BitVector[]
-    for j in 2:22
+    for j in 2:16;18:23
         if data[!, j][i] == 1
-            push!(v, feature_hdv[j-1])
+            if j < 18
+                push!(v, feature_hdv[j-1])
+            end
+            if j > 17
+                push!(v, feature_hdv[j-2])
+            end
         end
     end
     x = bitadd(v...)
@@ -232,6 +236,16 @@ function plotter()
     return fig
 end
 plotter()
+\end{minted}
+\subsection{Animal classifier}
+\begin{minted}[breaklines]{Julia}
+function predict(animal)
+    y = [hamming(mammal_hdv, animal), hamming(bird_hdv, animal), hamming(reptile_hdv, animal), hamming(fish_hdv, animal), hamming(amphibian_hdv, animal), hamming(bug_hdv, animal), hamming(invertebrate_hdv, animal)]
+    return findmin(y)[2]
+end
+using StatsBase
+pred = [predict(i) for i in data.species_hdv]
+mean(classls .== pred)
 \end{minted}
 \section{Anticancer protein example}
 \subsection{Data preprocessing}

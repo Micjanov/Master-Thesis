@@ -32,6 +32,7 @@ The results of both of these measurements are summarized in table~\ref{tab:dist}
     \end{tabular}
     \caption{\label{tab:dist}Overview of similarity measurements in HDC depending on the nature of the HDVs} 
 \end{table}
+
 It is important to note that two random HDVs will be orthogonal to each other just by stochastics. Also notice that the first quantifies a distance and the latter a similarity.
 \subsubsection{Addition} \label{sssec:add}
 Also referred to as \textit{bundling}, the element-wise addition as in equation~\ref{eqn:sum} of $n$ input vectors $\{X_{1} + X_{2} + \cdots + X_{n}\}$ creates a vector $X$ that is maximally similar to the input vectors.
@@ -99,7 +100,7 @@ To retrieve an approximation of A, D can be multiplied by X and the rest of the 
     &\approx A
 \end{split}
 \end{align}
-Julia makes it possible to write incredibly efficient programs whilst still being a high-level and interpreter-based programming language including many packages suited for mathematical operations. By using Julia, the following functions are written to respectively add, multiply and compare hyperdimensional binary vectors.
+Julia makes it possible to write incredibly efficient programs whilst still being a high-level and interpreter-based programming language including many packages suited for mathematical operations. By using Julia, the following functions are written to respectively add, multiply and compare hyperdimensional binary vectors. These are used in all further applications in this project.
 \begin{minted}[breaklines, escapeinside=||,mathescape=true]{Julia}
 function bitadd(vectors::BitVector ...)
     v = reduce(.+, vectors)
@@ -127,8 +128,7 @@ end
     \caption{10000 cases of random 10000-dimensional binary vectors are made and each time implemented following example~\ref{eqn:ex1}. The resulting Hamming distances between $A$ and $A'$ are then plotted in a histogram.}
     \label{fig:exm1}
 \end{figure}
-
-We see that we can retrieve a lot of information with most of the Hamming distances centering around 0.25. Notice that two completely random HDVs would have a distance close to 1 just by stochastics. A cosine similarity of 1 would mean that we retrieved all bits of A correctly, which is impossible in this model due to the consideration of noise. This result is not comparable to state-of-the-art accuracies but the calculations are very efficient nonetheless as all of these calculations were done in less than 2 seconds. This same experiment was done with random bipolar 10000-dimensional vectors and it performs slightly slower as expected but retained the accuracy (similar \textit{cosine similarity} peak around 0.5).
+We see that we can retrieve a lot of information with most of the Hamming distances centering around 0.25. Notice that two completely random HDVs would have a distance close to 1 just by stochastics. A Hamming distance of 0 would mean that we retrieved all bits of A correctly, which is impossible in this model due to the consideration of noise. This result is not comparable to state-of-the-art accuracies but the calculations are very efficient nonetheless as all of these calculations were done in less than 2 seconds. This same experiment was done with random bipolar 10000-dimensional vectors and it performs slightly slower as expected but retained the accuracy.
 \subsection{Examples of hyperdimensional computing on datasets}
 Now, the power of these simple operations will be demonstrated by applying them to a couple of datasets.
 \subsubsection{Zoo animal classification}
@@ -138,19 +138,30 @@ As the first example, we will consider a simple dataset\cite{zoo} containing 101
 \end{equation}
 This is simple for all the binary features but the feature for the number of legs is variable. Although it is possible to assign completely random vectors to each number of legs, it would make a slightly more biologically realistic model if an animal with 2 legs would be more similar to one with 4 legs than to one with 8 legs. To address this, a range of numbers would have to be representable by hyperdimensional vectors, the range from 0 to 8 in this case. First, a random hyperdimensional vector representing the lower bound of the interval is generated. Next, a vector representing the next step in the interval is constructed by replacing a fraction of the vector with random bits. This last step is then repeated to obtain a vector of each number in a range.
 
-To demonstrate the binding of HDVs, the types of features will be encoded into our feature set. For example, the 'milk' ($M$), and 'egg' ($E$) features give us information about the growth of the animal, so we will bind these features to another vector representing the growth feature ($G$) to obtain a more expanded model. This is also done for the skin protection features ($S$) and for all the features considering the limbs ($L$). This also gives us the possibility to retrieve some features of the animals as shown in the previous example. Thus, equation~\ref{eqn:chicken} can be expanded into:
+To demonstrate the binding of HDVs, the types of features will be encoded into our feature set. For example, the 'milk' ($M$), and 'egg' ($E$) features give us information about the growth of the animal, so we will bind these features to another vector representing the growth feature ($G$) to obtain a more expanded model. This is also done for the skin protection features ($S$) and all the features considering the limbs ($L$). This also gives us the possibility to retrieve some features of the animals as in the procedure shown in the previous example. Thus, equation~\ref{eqn:chicken} can be expanded into:
 \begin{equation}
     C = G*E + S*F + L*T
 \end{equation}
-After all these procedures, there are 101 animals with each a 10000-dimensional vector as a feature. To effectively analyze this data, a principal component analysis (PCA) has been applied to essentially reduce the 10000 features into 2. This projection can then be easily shown in a 2D plot, resulting in figure \ref{fig:exm2}.
+
+After all these procedures, there are 101 animals with each a 10000-dimensional vector as a feature. To effectively analyze this data, a principal component analysis (PCA) has been applied to essentially reduce the 10000 features into 2. This projection can then be easily shown in a 2D plot, resulting in figure \ref{fig:exm2}. This shows 3 easily distinguishable clusters of animal classes that make sense from an evolutionary standpoint. The model could be easily improved on this part by including more features that should show more separation of these classes.
 \begin{figure}[h]
     \centering
     \includegraphics[scale = 0.5]{pca1.png}
-    \caption{Scatter-plot of the two first principal components of a 101$\times$10000 matrix containing hyperdimensional vectors for every animal in the zoo dataset after a PCA procedure.}
+    \caption{Scatter-plot of the two first principal components (PCs) of a 101$\times$10000 matrix containing hyperdimensional vectors for every animal in the zoo dataset after a PCA procedure. These PCs account for roughly 48 \% of the variance.}
     \label{fig:exm2}
 \end{figure}
+
 After an HDV has been made for every animal, all animals of the same class can be bundled to obtain an HDV representing the said class. So for example, if we have a hyperdimensional vector for a pigeon ($P$), chicken ($C$) and a kiwi ($K$), an HDV representing birds ($B$) can be made by doing:
 \begin{equation}
     B = P + C + K
 \end{equation} 
-To classify an animal, its HDV can be compared to the HDVs of every class and the most similar vector is then assumed to be its class.
+To classify an animal, its HDV can be compared to the HDVs of every class and the most similar vector is then assumed to be its class. This has been tested for every animal in the dataset to observe if the animal's class type is retrievable from its HDV. Depending on the run, 94 to 97 \% of the animals' class type were retrievable. For further improvement, it would be possible to generate a set of animals not present in the dataset and test those in order to further understand how this model can be improved.
+\subsubsection{Protein classification}
+To illustrate an example more akin to this research topic, a model based on the principles of hyperdimensional computing will be built to classify a protein sequence dataset\cite{anticancer}. It contains 949 manually curated peptide sequences with their membranolytic anti-breast cancer activity level (very active, moderately active, experimentally inactive and virtually inactive). The virtually inactive sequences are omitted since they comprise 80 \% of the dataset and thus tend to oversaturate the data. The model will be built with mostly the same procedure as for the animal classifier, although instead of animals, sequences have to be encoded into HDVs now. First, a random HDV is generated for every amino acid. Physicochemical properties, evolutionary constraints etc. could be introduced but that is not necessary for this demonstration. Then, a peptide sequence is to be considered as a bag of trimers. A vector representing a trimer is generated by bundling the three amino acids whilst retaining sequential information by shifting as in equation~\ref{eqn:trimer}.
+\begin{equation}\label{eqn:trimer}
+    ABC = A + \Pi (B) + \Pi (\Pi (C))
+\end{equation}
+
+All retrievable trimers from a given sequence are then bundled together, forming a vector representative of the sequence. From here on, the same procedures as in the last example can be applied here too, so all HDVs of a class are bundled for further analysis. The PCA procedure did not generate interesting results, on top of that, the two first principal components explained only 21 \% of the variance. This means that it is not feasible to reduce the 10000 dimensions of the vectors to 2, likely because the information is too smeared out over the vectors. Nevertheless, this follows the philosophy of hyperdimensional computing in keeping holistic representations of concepts and is highly dependent on the variability of the input data. 
+
+Next, a classifier was made correspondingly. Except here, the dataset was split into a training set (comprising 80 \% of the sequences) and a test set to better simulate how the model would perform with new data. With 100 runs, it could predict the class on average 85 \% of the test sequences.
