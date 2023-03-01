@@ -20,6 +20,10 @@ end
 """
 Convert an array of arrays into a matrix
 """
-function nested_arrays2mat(arrays)
-    return reduce(hcat,arrays)
+function nested_arrays2mat(arrays, pd = false)
+    if pd == false
+        return reduce(hcat,arrays)
+    else
+        return permutedims(reduce(hcat,arrays))
+    end
 end
