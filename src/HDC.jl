@@ -58,3 +58,25 @@ function range_hdvs(steps)
     end
     return V
 end
+"""
+Simple 2-layer convolved embedding in hyperdimensional space
+"""
+function convolved_embedding(sequence, tokens, k=3)
+    # layer 1
+    kmer_hdvs = []
+    for i in 1:length(sequence)-k+1
+        kmer = sequence[i:i+k-1]
+        aa_hdvs = [circshift(tokens[aa], k-l) for (l, aa) in enumerate(kmer)]
+        push!(kmer_hdvs, bitbind(aa_hdvs))
+    end
+    
+    # layer 2
+    conv_kmer_hdvs = []
+    for i in 1:length(kmer_hdvs)-k+1
+        convolved_kmers = kmer_hdvs[i:i+k-1]
+        conv_hdvs = [circshift(convolved_kmers[l], k-l) for (l, km) in enumerate(convolved_kmers)]
+        push!(conv_kmer_hdvs, bitbind(conv_hdvs))
+    end
+    
+    return bitadd(conv_kmer_hdvs)
+end
