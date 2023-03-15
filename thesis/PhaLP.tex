@@ -1,10 +1,11 @@
 \chapter[Case study: PhaLP dataset]{Case study: \\PhaLP dataset}
 To implement and evaluate hyperdimensional computing in real-life problems, the potential of hyperdimensional computing will be evaluated on the PhaLP dataset~\cite{phalp} for this chapter. PhaLP is a comprehensive database currently comprising more than 17000 entries of phage lytic proteins and much of their information such as their type, domains and tertiary structures. Phage lytic proteins are used by bacteriophages to infect bacterial cells. To cross the bacterial cell walls, phages use two different types of phage lytic proteins: virion-associated lysins (VALs) and endolysins. Phage lytic proteins also comprise one or more functional domains categorized into two classes: enzymatically active domains (EADs) and cell wall binding domains (CBDs). We use the latest database version as of March 2023,~\textit{v2021\_04}.
 
-\section{Sequence embedding}
-BoW, convolutional, transformer-like...
+\section{Sequence embedding techniques}
+
 
 \section{Type classifcation}
-Only a fraction of the database is manually annotated to include the protein's type because the amount of phage lytic proteins whose type is described in literature is relatively small. The developers of PhaLP resorted to a machine learning approach for further classification. They embedded each protein sequence \textit{via} SeqVec ~\cite{SeqVeq} and trained a random forest classifier with 100 estimators and balanced weights to classify the proteins whose types were unknown. Out of the 11549 unambiguous UniParc accessions in the newest version of the database, 4829 are manually annotated on their type. Out of these manually annotated proteins, 2803 are endolysins and 2026 are VALs. For this case study, we attempted to classify the proteins using the hyperdimensional computing framework.
+Only a fraction of the database is manually annotated to include the protein's type because the amount of phage lytic proteins whose type is described in literature is relatively small. The developers of PhaLP resorted to a machine learning approach for further classification. They embedded each protein sequence \textit{via} SeqVec~\cite{seqvec} and trained a random forest classifier with 100 estimators and balanced weights to classify the proteins whose types were unknown. Out of the 11549 unambiguous UniParc accessions in the newest version of the database, 4829 are manually annotated on their type. Out of these manually annotated proteins, 2803 are endolysins and 2026 are VALs. For this case study, we attempted to classify the proteins using several methods.
 
-\subsection{Purely hyperdimensional}
+\subsection{Purely hyperdimensional}*
+\subsection{Machine learning models with hyperdimensional embeddings}*

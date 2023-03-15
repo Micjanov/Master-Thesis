@@ -1,9 +1,9 @@
 {
-    "julia.environmentPath": "/home/mfat/.julia/environments/v1.8",
     "grammarly.selectors": [
         {
             "language": "latex",
             "scheme": "file"
         }
-    ]
+    ],
+    "julia.environmentPath": "/home/mfat/envir1"
 }
