@@ -94,7 +94,7 @@ The results of both of these measurements are summarized in table~\ref{tab:dist}
 It is important to note that two random HDVs will be quasi-orthogonal to each other just by stochastics. Also notice that the first quantifies a distance and the latter a similarity.
 \section{Examples}
 There are many interesting possibilities given the relative simplicity of all these operations. We shall illustrate some applications and examples. From here, all implementations are written in the programming language Julia unless noted otherwise. Julia makes it possible to write incredibly efficient programs whilst still being a high-level and interpreter-based programming language with many packages suited for mathematical operations included. Also note that all examples have been implemented with binary hyperdimensional vectors unless stated otherwise. However with minimal changes, bipolar vectors could also be applied. All source code is provided in the appendices.
-\subsection{Simple example with simulated data}*
+\subsection*{Simple example with simulated data}
 To get a feel for the operations, assume $A, B, C, X, Y$ and $Z$ to be random 10000-dimensional bipolar hypervectors and that $D = X*A + Y*B + Z*C$, let us then try to retrieve A from D by using the defined operations. We generate for $A, B, C, X, Y$ and $Z$ each a random 10000-D vector. To retrieve an approximation of A, D can be multiplied by X and the rest of the included vectors are then regarded as noise as done in equations~\ref{eqn:ex1}. Because of the robustness of hyperdimensional vectors, a lot of information of A should still be contained within D.
 \begin{align}\label{eqn:ex1}
 \begin{split}
@@ -112,9 +112,10 @@ To get a feel for the operations, assume $A, B, C, X, Y$ and $Z$ to be random 10
     \label{fig:exm1}
 \end{figure}
 We see that we can retrieve a lot of information with most of the Hamming distances centering around 0.25. Notice that two completely random HDVs would have a distance close to 1 just by stochastics. A Hamming distance of 0 would mean that we retrieved all bits of A correctly, which is impossible in this model due to the consideration of noise. Although we work with a very constrained model, vector A is roughly 75 \% retrievable and the calculations are very efficient as all of these can be completed in less than 2 seconds on a laptop. This same experiment was done with random bipolar 10000-dimensional vectors and it performs slightly slower as expected but retained the accuracy.
-\section{Examples of hyperdimensional computing with real datasets}*
+\section{Examples of hyperdimensional computing with real datasets}
+\label{sec:example}
 Now, the power of these simple operations will be demonstrated by applying them to a couple of relatively small real datasets.
-\subsection{Zoo animal classification}*
+\subsection*{Zoo animal classification}
 As the first example, we will consider a simple dataset\cite{zoo} containing 101 animals with 17 descriptors such as their number of legs, their skin covering and other physical properties. In the end, we want to create a simple model that can classify these animals and other animals that are not present in the dataset based on their descricptors. To tackle this problem, we first assign to each descriptor a random hyperdimensional vector. For each animal, all of its features can be bundled to obtain a final vector representing the animal. For example, it is known that a chicken lays eggs, is covered with feathers and has two legs so then these features can be bundled as in the following equation. $C$ is a vector representing a chicken, $E$ the ability to lay eggs, $F$ the possession of feathers and $T$ the possession two legs:
 \begin{equation}\label{eqn:chicken}
     C = E + F + T
@@ -139,7 +140,7 @@ After an HDV has been made for every animal, all animals of the same class can b
     B = P + C + K
 \end{equation} 
 To classify an animal, its HDV can be compared to the HDVs of every class and the most similar vector is then assumed to be its class. The dataset was stratified and split into a training set (comprising 80 \% of the sequences) and a test set. With 100 runs, it could predict the class on average 94 \% of the test animals. For further improvement, it would be possible to generate a set of animals not present in the dataset and test those in order to further understand how this model can be improved. On top of this, it would also be possible to generate a confusion matrix to understand where we could use more distinguishing descriptors. From the PCA, we could already predict that reptiles and amphibians would be easily confused, as for invertebrate and bugs.
-\subsection{Protein classification}*
+\subsection*{Protein classification}
 \label{ssec:protclas}
 To illustrate an example more akin to this research topic, a model based on the principles of hyperdimensional computing will be built to classify a protein sequence dataset\cite{anticancer}. It contains 949 manually curated peptide sequences with their membranolytic anti-breast cancer activity level (very active, moderately active, experimentally inactive and virtually inactive). The virtually inactive peptides are predicted to be inactive. The model will be built with mostly the same procedure as for the animal classifier, but instead of animals, sequences have to be encoded into HDVs now. First, a random HDV is generated for every amino acid. Physicochemical properties, evolutionary constraints etc. could be introduced to make this model more realistic but that is not necessary for this demonstration. Next, a peptide sequence is to be considered as a bag of trimers as seen in figure~\ref{fig:diagram_exprot}. A vector representing a trimer is generated by binding the three amino acids whilst retaining sequential information by shifting as in equation~\ref{eqn:trimer}. All retrievable trimers from a given sequence are then bundled together, forming a vector representative of the sequence. 
 \begin{equation}\label{eqn:trimer}

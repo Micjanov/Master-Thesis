@@ -1,7 +1,11 @@
-\chapter[Sequence embedding methods]{Sequence embedding methods}
+\chapter[Sequence embedding methods]{Sequence embedding\\methods}
 
 \section{Bag-of-words}
 In chapter~\ref{ssec:protclas}, a method of embedding sequences of amino acids has already been discussed. Here, a sequence of amino acids is considered to be a bag of k-mers. Within a k-mer, the amino acids (presented as randomly generated hyperdimensional vectors) are bonded together with sequential information included. All possible k-mers are all then bundled together, the result is then a hyperdimensional vector representing the whole sequence.
 \# picture
 
 \section{Convolutional embedding}
+Here, we introduce a novel sequence embedding method within the framework of hyperdimensional computing. It is similar to the bag-of-words method in the sense that it bundles vectors of k-mers, but here the k-mer's positional information will be encoded into the k-mer before bundling. insert picture
+
+\section{Encoding biological information into a HDV}
+Prior, we always assigned fully random hyperdimensional vectors to every amino acid. However, this is not realistic since some amino acids are chemically more similar to each other than to others, but also in an evolutionary sense. So to account for this, embeddings from earlier trained models have been extended into hyperdimensions. We used the last layer of the 3 billion-parameter ESM-2 model~\cite{esm2} of every amino acid, resulting in 1024-dimensional real-valued embeddings for every amino acid. To extend these into hyperdimensions, a simple matrix multiplication has been employed: $A_{1x1024}X B_{1024x10000} = C_{1x10000}$ where $A$ is an ESM-2 embedding and B a matrix of 1024 random 10000-D vectors. The resulting vectors are then min-max scaled and rounded depending on the desired nature of the vectors.
