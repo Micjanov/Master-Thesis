@@ -59,7 +59,7 @@ function range_hdvs(steps)
     return V
 end
 """
-Simple 2-layer convolved embedding in hyperdimensional space
+Simple 2-layer convolved embedding in hyperdimensional space for binary vectors
 """
 function convolved_embedding(sequence, tokens, k=3)
     # layer 1
@@ -79,4 +79,21 @@ function convolved_embedding(sequence, tokens, k=3)
     end
     
     return bitadd(hcat(conv_kmer_hdvs)...)
+end
+"""
+encode information around AA into vector
+"""
+function encodeAA(X, sequence, w=4)
+    k = length(sequence)
+    hdvs = []
+    range1 = 1:k
+    Threads.@threads for i in range1
+        seqi = X[sequence[i]]
+        range2 = [i for i in i-w:i+w]
+        filter!(x -> x∈range1, range2)
+        hdvs1 = [bitbind(circshift(X[sequence[j]], j-i), seqi) for j in range2]
+        hdv = bitadd(hdvs1...)
+        push!(hdvs, hdv)
+    end
+    return hdvs
 end
