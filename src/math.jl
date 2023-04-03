@@ -18,7 +18,7 @@ function mat_scaler(matrix, lower, upper, dim = 1)
     return scaled
 end
 """
-Convert an array of arrays into a matrix
+Convert an array of arrays into a matrix, pd: transpose matrix
 """
 function nested_arrays2mat(arrays, pd = false)
     if pd == false
