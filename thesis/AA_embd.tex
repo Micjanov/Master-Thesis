@@ -5,25 +5,38 @@ Currently, in most of the research in hyperdimensional computing, there is an em
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.5]{random_emb}
-    \caption{Scatter-plot of the first two principal components of random hyperdimensional vectors assigned to amino acids to set a baseline level. These PCs account for roughly 10.5 \% of the total variance. The amino acids are colored based on their chemical property of polarity. This plot can look completely different depending on the run.}
-    \label{fig:AArand}
+    \caption{Scatter-plot of the first two principal components of random hyperdimensional vectors assigned to amino acids to set a baseline level. These PCs account for roughly 10.5 \% of the total variance. The amino acids are annotated and colored based on their chemical property of polarity. This plot can look completely different depending on the run.}\label{fig:AArand}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.5]{esm_emb}
-    \caption{Scatter-plot of the first two principal components of ESM embeddings extended into hyperdimensionality. These PCs account for roughly 22 \% of the total variance. The amino acids are colored based on their chemical property of polarity.}
-    \label{fig:AAesm}
+    \caption{Scatter-plot of the first two principal components of ESM embeddings extended into hyperdimensionality. These PCs account for roughly 22 \% of the total variance. The amino acids are colored based on their chemical property of polarity.}\label{fig:AAesm}
 \end{figure}
 
-
-To account for this, we tried to encode the biological information of amino acids into HDVs by extending existing embeddings into hyperdimensionality and comparing these to baseline random hypervectors. To assess this, the vectors for each amino acids are reduced in dimensionality \textit{via} PCA into 2 dimensions and then plotted as seen in figures \ref{fig:AArand} and \ref{fig:AAesm}. At first glance, there is not much to spot. Yet, there is significantly more variance encoded into the first two principal components of the ESM embeddings compared to the random vectors, meaning that there should be a significant amount of similarity encoded into the hyperdimensional vectors. This may be shown more clearly when used and compared in real-world problems.
+To account for this, we tried to encode the biological information of amino acids into HDVs by extending existing embeddings into hyperdimensionality and comparing these to baseline random hypervectors. To assess this, the vectors for each amino acids are reduced in dimensionality \textit{via} PCA into 2 dimensions and then plotted as seen in figures~\ref{fig:AArand} and~\ref{fig:AAesm}. At first glance, there is not much to spot. Yet, there is significantly more variance encoded into the first two principal components of the ESM embeddings compared to the random vectors, meaning that there should be a significant amount of similarity encoded into the hyperdimensional vectors. This may be shown more clearly when used and compared in real-world problems.
 
 \subsection*{Encoding interactions of other amino acids into a vector}
-State-of-the-art protein language models have the ability to gather information on long-range dependencies around a single amino acid and to encode this information into neural networks and in embeddings. To investigate the possibilities of developing embeddings on the level of amino acids, we propose a novel encoding technique within the hyperdimensional computing framework. It encodes interactions of a given amino acid in a sequence to other amino acids in the sequence around it in a predetermined range. This method thus tries to learn information about an amino acid within a sequence in an unsupervised manner.
-\begin{figure}[h!]
+State-of-the-art protein language models have the ability to gather information on long-range dependencies around a single amino acid and encode this information into neural networks and in embeddings. To investigate the possibilities of developing embeddings on the level of amino acids, we propose a novel encoding technique within the hyperdimensional computing framework. It encodes interactions of a given amino acid in a sequence to other amino acids in the sequence around it in a predetermined range. This method thus tries to learn information about an amino acid within a sequence in an unsupervised manner.
+\begin{figure}[H]
     \centering
     \includegraphics[scale = 0.15]{transformerlike}
     \caption{A simple demonstration of our amino acid encoder. It considers an amino acid and all amino acids in a predetermined distance (here k = 2). It produces all possible interactions of the central amino acid in the window by binding and then bundles all the pairwise interactions into one hyperdimensional vector that represents the central amino acid.}
     \label{fig:AAtr}
+\end{figure}
+
+Windows of $k = 4$ and $k = 50$ were considered. write more
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.5]{4tr_emb}
+    \caption{change caption}
+    \label{fig:AAtr4}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.5]{50tr_emb}
+    \caption{change caption}
+    \label{fig:AAtr50}
 \end{figure}

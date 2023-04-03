@@ -2,7 +2,9 @@
 Every random hyperdimensional vector produced is made to be binary and 10000-dimensional unless noted otherwise. 
 
 \section{Amino acid embeddings}
-To encode biological information into the vectors, we used the last layer of the 3 billion-parameter ESM-2 model~\cite{esm2} of every amino acid, resulting in 1024-dimensional real-valued embeddings for every amino acid. To extend these into hyperdimensionality, a simple matrix multiplication has been employed: $A_{1x1024} \times B_{1024x10000} = C_{1x10000}$ where $A$ is an 1024-dimensional ESM-2 embedding and B a matrix of 1024 random 10000-D vectors. The resulting vectors are then min-max scaled and rounded depending on the desired nature of the vectors.
+To encode biological information into the vectors, we used the last layer of the 3 billion-parameter ESM-2 model~\cite{esm2} of every amino acid, resulting in 1024-dimensional real-valued embeddings for every amino acid. To extend these into hyperdimensionality, a simple matrix multiplication has been employed: $A_{1x1024} \times B_{1024x10000} = C_{1x10000}$ where $A$ is an 1024-dimensional ESM-2 embedding and B a matrix of 1024 random 10000-D vectors. The resulting vectors are then min-max scaled and rounded depending on the desired nature of the vectors. 
+
+To encode the surroundings of an amino acid in a sequence, all possible pairwise interactions with the central amino acid in question in a given window were made \textit{via} binding and then all encoded into one vector \textit{via} bundling as shown figure~\ref{fig:AAtr}, starting from ESM embeddings extended into hyperdimensionality as explained earlier. This encoder was tested on the human reference proteome in UniProt, entry \textit{UP000005640}, containing 20591 proteins. After all amino acids were encoded, an element-wise average was made for every amino acid. The resulting hyperdimensional vectors were kept to a real-numbered nature to not lose information for illustration purposes.
 
 \section{Case study: PhaLP dataset}
 As of March 2023, the latest version of the PhaLP database,~\textit{v2021\_04}, has been used to test our models.
