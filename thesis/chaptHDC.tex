@@ -154,4 +154,11 @@ To illustrate an example more akin to this research topic, a model based on the 
 \end{figure}
 From here on, the same procedures as in the last example can be applied here too, so all HDVs of a class are bundled for further analysis. The PCA procedure did not generate interesting results because the two first principal components explained only 5 \% of the variance, aside from the clear clustering of the predicted inactive peptides. This means that it is not feasible to reduce the 10000 dimensions of the vectors to 2, likely because the information is too smeared out over the vectors. This occurrence is highly dependent on the training data. Nevertheless, this follows the philosophy of hyperdimensional computing in keeping holistic representations of concepts.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.5]{exampprot.png}
+    \caption{Scatter-plot of the first two principal components, decomposing the 10000-dimensional vectors for every peptide into 2. These PCs account for roughly 5 \% of the total variance}
+    \label{fig:diagram_exprot}
+\end{figure}
+
 Next, a classifier was made correspondingly. The dataset was stratified and split into a training set (comprising 80 \% of the sequences) and a test set. With 100 runs, it could predict the class on average 85 \% of the test sequences. It has to be taken into account that the predicted inactive peptides account for 80 \% of the sequences of the dataset, thus this model performs slightly better than if we would predict at random. There are many possible improvements to be made however, such as using more suitable performance metrics, introducing similarities between amino acids instead of setting them randomly and using more suitable frameworks for our protein language models, which will all be research topics further on in this project.

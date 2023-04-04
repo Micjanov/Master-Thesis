@@ -4,6 +4,5 @@
             "language": "latex",
             "scheme": "file"
         }
-    ],
-    "julia.environmentPath": "/home/mfat/.julia/environments/v1.8"
+    ]
 }
