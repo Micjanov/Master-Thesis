@@ -9,6 +9,7 @@ data/phalp_bow_rand_real.jld
 data/phalp_bow_esm_real.jld
 data/phalp_cnn_esm_real.jld
 data/phalp_cnn_rand_real.jld
+data/phalp_bow_esm_realnorm.jld
 ################################################################################
 #                                    Julia                                     #
 ################################################################################
