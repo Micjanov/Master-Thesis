@@ -1,4 +1,4 @@
-\chapter{Case study: PhaLP dataset}[Case study: PhaLP dataset]
+\chapter{Case study:\\PhaLP dataset}
 To implement and evaluate hyperdimensional computing in real-life problems, the potential of hyperdimensional computing will be evaluated on the PhaLP dataset~\cite{phalp} for this chapter. PhaLP is a comprehensive database currently comprising more than 17000 entries of phage lytic proteins including much of their information such as their type, domains and tertiary structures. Phage lytic proteins are used by bacteriophages to infect bacterial cells. To cross the bacterial cell walls, phages use two different types of phage lytic proteins: virion-associated lysins (VALs) and endolysins. Phage lytic proteins also comprise one or more functional domains categorized into two classes: enzymatically active domains (EADs) and cell wall binding domains (CBDs).
 
 All 17356 unique protein sequences were embedded into hyperdimensional vectors. This took only a few minutes for every method on a consumer laptop.
@@ -24,7 +24,7 @@ There was no visual difference between the PCA plots for the bag-of-words method
     \label{fig:phalpbowesm}
 \end{figure}
 
-\subsection*{Purely hyperdimensional}
+\subsection*{Purely hyperdimensional}\label{ssec:purehdc}
 As a baseline level, we use the rudimentary HDV classification technique as seen in chapter~\ref{sec:example}: the HDVs of sequences of the same class are bundled to construct single HDVs representative of every class. Then, a sequence's class is inferred by comparing the sequence's HDV to both class HDV \textit{via} a similarity measure based on the assumption that the class vector is maximally similar to its components. This model was evaluated \textit{via} a stratified 10-fold cross validation.
 \begin{table}[h]
     \caption{\label{tab:phalpclass}Results of type classifications using the principal classification technique of hyperdimensional computing and an XGBoost classifier with several kinds of embeddings}

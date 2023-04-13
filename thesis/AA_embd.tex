@@ -1,4 +1,5 @@
-\chapter{Hyperdimensional embeddings on the level of amino acids}[Hyperdimensional embeddings on the level of amino acids]
+\chapter{Hyperdimensional embeddings on the level of amino acids}
+From here on, every hyperdimensional vector is made to be 10000-dimensional and binary unless noted otherwise.
 \section{Encoding biological information into a vector}
 Currently, in most of the research in hyperdimensional computing, there is an emphasis on creating and assigning hyperdimensional vectors fully randomly to certain concepts. This is useful for optimizing speed and efficiency and is not a problem for many cases such as natural language processing, where it is usually assumed that a letter does not have varying degrees of similarities to other letters in the alphabet. For protein language modeling, however, this assumption is not valid since some amino acids are chemically more similar to each other than to others, but also in an evolutionary sense. It is not uncommon to spot substitutions on the level of amino acids within the same proteins between different species and to barely notice changes in structure and function.
 
@@ -26,7 +27,7 @@ State-of-the-art protein language models have the ability to gather information 
     \label{fig:AAtr}
 \end{figure}
 
-Windows of $k = 4$ and $k = 50$ were considered for illustration purposes in figures \ref{fig:AAtr4} and \ref{fig:AAtr50}. Every single residue in the human reference proteome was encoded with information within the k-range window and an average vector was made for every amino acid. For all 20591 peptides in the reference proteome, this procedure took only 3 hours for $k = 4$, but upwards to 20 hours for $k = 50$ on a high-performance computing cluster (HPC). Both random HDVs and extended ESM embeddings were tested as base vectors. At first glance, the charged amino acids seem to be grouped vertically by PC 2, roughly dividing the polar and non-polar amino acids, albeit slightly more pronounced for $k = 50$. Also interesting, the starting ESM embeddings are extended into hyperdimensionality in a random manner, so to see very similar groupings in the PCA plots indicates that the first four amino acids before and after a residue are the most crucial.
+Windows of $k = 4$ and $k = 50$ were considered for illustration purposes in figures \ref{fig:AAtr4} and \ref{fig:AAtr50}. Every single residue in the human reference proteome was encoded with information within the k-range window and an average vector was made for every amino acid. For all 20591 peptides in the reference proteome, this procedure took only 3 hours for $k = 4$, but upwards to 15 hours for $k = 50$ on a high-performance computing cluster (HPC). Both random HDVs and extended ESM embeddings were tested as base vectors. At first glance, the charged amino acids seem to be grouped vertically by PC 2, roughly dividing the polar and non-polar amino acids, albeit slightly more pronounced for $k = 50$. Also interesting, the starting ESM embeddings are extended into hyperdimensionality in a random manner, so to see very similar groupings in the PCA plots indicates that the first four amino acids before and after a residue are the most crucial.
 
 \begin{figure}[H]
     \centering
@@ -41,3 +42,21 @@ Windows of $k = 4$ and $k = 50$ were considered for illustration purposes in fig
     \caption{Scatter-plot of the first two principal components of the average amino acid HDVs with neighborhood-information of $k = 50$ encoded, trained on the human reference proteome. These PCs account for roughly 21 \% of the total variance. The amino acids are annotated and colored based on their chemical property of polarity. These were made starting from extended ESM embeddings.}
     \label{fig:AAtr50}
 \end{figure}
+
+Neighborhood-encoded residue vectors were also generated as above starting from fully random HDVs for every amino acid. PCA scatter plots generated slightly different results as compared to the ones starting from ESM embeddings. These PCAs also capture less variance. For $k = 4$, some typicalities are noticed such as the close grouping of the negatively charged amino acids and the triangular grouping of H, L and R. Nonetheless, for $k = 50$ we see results deviating from all the PCA scatter plots of other neighborhood-encoded amino acids. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.5]{r4tr_emb}
+    \caption{Scatter-plot of the first two principal components of the average amino acid HDVs with neighborhood-information of $k = 4$ encoded, trained on the human reference proteome. These PCs account for roughly 11 \% of the total variance. The amino acids are annotated and colored based on their chemical property of polarity. These were made starting from random hyperdimensional vectors.}
+    \label{fig:AArtr4}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.5]{r50tr_emb}
+    \caption{Scatter-plot of the first two principal components of the average amino acid HDVs with neighborhood-information of $k = 50$ encoded, trained on the human reference proteome. These PCs account for roughly 11 \% of the total variance. The amino acids are annotated and colored based on their chemical property of polarity. These were made starting from random hyperdimensional vectors.}
+    \label{fig:AArtr50}
+\end{figure}
+
+In section \textit{'Learning Encodes Biochemical Properties'} of the article of Meta AI's ESM-1~\cite{esm1}, they conducted a similar experiment with their transformer model. Our results are comparable to theirs, but not as cleanly grouped which is likely due to several factors. First, the amount of data we used is not comparable to theirs: ours were trained on less than 21000 sequences whilst theirs was trained on 250 million sequences. They also included sequences originating from all recorded organisms in the UniProt database at that time whilst we confined ourselves to human sequences. Secondly, hyperdimensional vectors have a limited capacity, which is more thoroughly discussed in section~\ref{ssec:purehdc}, meaning long-range dependencies of a residue will saturate the hyperdimensional vector depending on the range. Due to the intrinsic randomness of hyperdimensional computing, it is also prone to capture some amount of noise. UMAP projections were also made, shown in section~\ref{app:chp3} in the appendices, but these did not reveal any new information. Applying these HDVs to other real-world problems should reveal the performance and usefulness of the neighborhood-encoding.
