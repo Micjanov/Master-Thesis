@@ -5,14 +5,7 @@
 # Folders to ignore - files may be too large, too many, etc. NOTE: EDIT IF NEEDED.
 videos
 _research
-data/phalp_bow_rand_real.jld
-data/phalp_bow_esm_real.jld
-data/phalp_cnn_esm_real.jld
-data/phalp_cnn_rand_real.jld
-data/phalp_bow_esm_realnorm.jld
-data/phalp_bow_rand_realnorm.jld
-data/phalp_cnn_rand_realnorm.jld
-data/phalp_cnn_esm_realnorm.jld
+*.jld
 ################################################################################
 #                                    Julia                                     #
 ################################################################################
