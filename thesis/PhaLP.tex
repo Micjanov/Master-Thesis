@@ -30,7 +30,7 @@ As a baseline level, we use the rudimentary HDV classification technique as seen
     \caption{\label{tab:phalpclass}Results of type classifications using the principal classification technique of hyperdimensional computing and an XGBoost classifier with several kinds of embeddings}
     \resizebox{\textwidth}{!}{\begin{tabular}{|c||c|c|c|c|}
         \hline
-        \underline{F1-scores} & \textbf{BoW random} & \textbf{BoW ESM} & \textbf{Convolutional random} & \textbf{Convolutional ESM} \\
+        \underline{F1-scores} & \textbf{BoW/random} & \textbf{BoW/ESM} & \textbf{Convolutional/random} & \textbf{Convolutional/ESM} \\
         \hline
         \textbf{Naive addition} & 0.1458 & 0.1468 & 0.1461 & 0.1461 \\
         \hline
@@ -59,6 +59,28 @@ To train the model, assume a new data point $\vec{V}$ with label $l$ and class v
     \vec{C_{l'}} &\leftarrow \vec{C_{l'}} - \eta (1 - cos_{l'}) * \vec{V}
 \end{alignat}
 
-This means that if a new data point is highly dissimilar to its class vector and thus contains a high amount of new information, the weight of the update will increase. The information is then also subtracted from the incorrectly predicted class vector. If a label would be correctly predicted for a new data point, the model will not be updated to avoid saturation. Due to the nature of this model, we cannot constrict our hyperdimensional embeddings to a bipolar or binary nature anymore and the embeddings are then allowed to be real-numbered. Mathematical operations such as multiplications and additions are then assumed to be element-wise. Since this algorithm is only available as a PyTorch implementation, an implementation in Julia has been made.
+This means that if a new data point is highly dissimilar to its class vector and thus contains a high amount of new information, the weight of the update will increase. The information is then also subtracted from the incorrectly predicted class vector. If a label would be correctly predicted for a new data point, the model will not be updated to avoid saturation. To initialize the model, the first vector of a class to be assessed is assumed to be the class vector. Due to the nature of this model, we cannot constrict our hyperdimensional embeddings to a bipolar or binary nature anymore and the embeddings are then allowed to be real-numbered. Mathematical operations such as multiplications and additions are then assumed to be element-wise.
 
-To test this algorithm, real-numbered embeddings have to be made from our subject sequences. The same bag-of-words and convolutional approaches as well as the random and ESM base-vectors are also applied here, but all starting from random vectors with values in $[-10, 10]$.
+On top of single-pass model as discussed above, A. Hernandez-Cano~\textit{et al.} also implemented an iterative retraining algorithm to increase the accuracy of OnlineHD. This starts from the class vectors made \textit{via} the single-pass OnlineHD model, but assesses the class vectors by performing inference with every training vector. If a training vector's label is wrongly predicted, equations 4.1 and 4.2 are then used to update the model. This all is then iterated for a given amount of cycles.
+
+To test these algorithms, real-numbered embeddings have to be made from our subject sequences. The same bag-of-words and convolutional approaches as well as the random and ESM base vectors are also applied here, but all starting from random vectors with values in $[-1, 1]$. These embeddings were assessed \textit{via} a scatter-plot of the two first principal components of their PCA projection. (insert firgures)
+
+Since these algorithms are only available as PyTorch implementations, implementations in Julia have been made here. A stratified 10-fold cross validation of these models with our subject sequences has been performed. The learning rate is set at 0.035 and the amount of retraining iterations is set to 120. The results are provided in table~\ref{tab:phalpclassonline}. At first, there is generally a substantial increase in the performance of this model compared to the naive additive model. The single-pass model seems to have widely varying results depending on the type of embeddings used, with the bag-of-words embeddings generally performing better than the convolutional embeddings and also the ESM-based embeddings performing better than random base vectors. Iterative retraining of the model also seems to increase its performance significantly, even coming close to the performance of an XGBoost classifier in this case. Further improvement might be found when optimizing the models' parameters.
+
+The cross validation procedure takes less than 10 seconds to run for the single-pass model, whilst doing a retraining of the model adds 2 to 3 minutes. This model appears to be a decently performing extension of the rudimentary hyperdimensional classification model for protein language modeling, whilst still being much more efficient than the commonly used machine learning models. The drawback of the model is that we cannot use hyperefficient bit-operations anymore, which limits its efficiency compared to the binary nature of the additive model.
+
+\begin{table}[h]
+    \caption{\label{tab:phalpclassonline}Results of type classifications using implementations of OnlineHD with several kinds of embeddings}
+    \resizebox{\textwidth}{!}{\begin{tabular}{|c||c|c|c|c|}
+        \hline
+        \underline{F1-scores} & \textbf{BoW/random} & \textbf{BoW/ESM} & \textbf{Convolutional/random} & \textbf{Convolutional/ESM} \\
+        \hline
+        \textbf{Single-pass OnlineHD} & 0.8901 & 0.9214 & 0.7793 & 0.8400 \\
+        \hline
+        \textbf{Iterative OnlineHD} & 0.9487 & 0.9757 & 0.9486 & 0.9670 \\
+        \hline
+    \end{tabular}}
+\end{table}
+
+\section{Domain classification}
+possible domain classification implementation, may or may not be interesting, but would be again a sequence classification (bit more complex perhaps) that we already tackled 

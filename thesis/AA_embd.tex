@@ -8,13 +8,13 @@ To account for this, we tried to encode the biological information of amino acid
 To assess these, the vectors for each amino acids are reduced in dimensionality \textit{via} PCA into 2 dimensions and then plotted as seen in figures~\ref{fig:AArand} and~\ref{fig:AAesm}. At first glance, there is not much to spot. Yet, there is significantly more variance encoded into the first two principal components of the ESM embeddings compared to the random vectors, meaning that there should be a significant amount of similarity encoded into the hyperdimensional vectors. This may be shown more clearly when used and compared in real-world problems.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale = 0.5]{random_emb}
+    \includegraphics[scale = 0.12]{random_emb}
     \caption{Scatter-plot of the first two principal components of random hyperdimensional vectors assigned to amino acids to set a baseline level. These PCs account for roughly 10.5 \% of the total variance. The amino acids are annotated and colored based on their chemical property of polarity. This plot can look completely different depending on the run.}\label{fig:AArand}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale = 0.5]{esm_emb}
+    \includegraphics[scale = 0.12]{esm_emb}
     \caption{Scatter-plot of the first two principal components of ESM embeddings extended into hyperdimensionality. These PCs account for roughly 22 \% of the total variance. The amino acids are annotated and colored based on their chemical property of polarity.}\label{fig:AAesm}
 \end{figure}
 
