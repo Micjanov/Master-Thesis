@@ -1,4 +1,4 @@
-\chapter{Hyperdimensional computing for amino acid and sequence enconding}
+\chapter{Hyperdimensional computing for amino acid encoding}
 \section{Encoding single amino acids into hyperdimensional vectors}
 Currently, in most of the research in hyperdimensional computing, there is an emphasis on creating and assigning hyperdimensional vectors to certain concepts at random. This is useful for optimizing speed and efficiency and is not a problem for many cases such as natural language processing, where it is usually assumed that a letter does not have varying degrees of similarities to other letters in the alphabet. For protein language modeling, however, this assumption may be suboptimal since some amino acids are chemically more similar to each other than to others. We can already estimate \textit{via} many kinds of distance measures physicochemical distances between amino acids based on their physicochemical properties~\cite{physicochem} such as volume, polarity, chemical groups etc. The different similarities between amino acids are tied into the structure and thus function of amino acid sequences and shape our view of protein language. It explains why some amino acid substitutions can result in almost no phenotypical changes or on the other hand detrimental changes. Proteins have evolved to maintain their structure and function, and drastic changes in physicochemical properties can disrupt these characteristics. Therefore, amino acid substitutions that preserve the physicochemical properties of the original amino acid are more likely to be selected, resulting in a negative correlation with physicochemical distance. To account for the physicochemical information, we encoded biological information of amino acids into hyperdimensional space using amino acid embeddings from ESM-2~\cite{esm2} by simple matrix multiplications.
 
@@ -21,7 +21,7 @@ The last layer of the 3 billion-parameter ESM-2 model~\cite{esm2} of every amino
 
 A \textit{BLOSUM62} substitution matrix \cite{blosum} and Grantham's distance matrix \cite{aa_evolution} were considered as pairwise similarity matrices for the GA. These were then normalized to obtain the target pairwise Hamming distances. The fitness is determined by the sum of the squared differences between the computed distance matrix of an individual and the target distance matrix. The lower the fitness value, the more optimal the individual. A genetic algorithm was implemented with the \textit{Evolutionary.jl v0.11.1}~\cite{evojl} package in \textit{Julia}. MIGHT CHANGE The population size was set to 25000 and the number of generations to 250. The mutation rate was set to 0.15 and the crossover rate to 0.2, these are respectively unusually high and low because we want to emphasize the bit-flipping and avoid recombination of vectors. HOW TO ANALYZE
 
-To encode the neighborhood of an amino acid in a sequence, all possible pairwise interactions with the central amino acid in question in a given window are made \textit{via} binding and then all encoded into one vector \textit{via} bundling as shown figure~\ref{fig:AAtr}. Our neighborhood-encoder was tested on the human reference proteome in UniProt, entry \textit{UP000005640}, containing 20591 proteins. After all amino acids were encoded, an element-wise average was made for every amino acid. The resulting hyperdimensional vectors were kept to a real-numbered nature to not lose information for illustrative purposes.
+To encode the neighborhood of an amino acid in a sequence, all possible pairwise interactions with the central amino acid in question in a given window are made \textit{via} binding and then all encoded into one vector \textit{via} bundling as shown figure~\ref{fig:AAtr}. Our neighborhood-encoder was tested on the human reference proteome in UniProt, entry \textit{UP000005640}, containing 20591 proteins starting with both random vectors and extended ESM-2 vectors. Windows of $n = 4$ and $k = 50$ were considered resulting in 4 different experiments. Every single residue in the human reference proteome was encoded with information within the k-range window and an average vector was made for every amino acid. For all 20591 peptides in the reference proteome, this procedure took only 3 hours for $n = 4$, but upwards to 15 hours for $n = 50$ on a high-performance computing cluster (HPC). After all amino acids were encoded, an element-wise average was made for every amino acid. The resulting hyperdimensional vectors were kept to a real-numbered nature to not lose information for illustrative purposes. Principal component analysis was then done for these 4 experiments as seen in figure~\ref{fig:bigfig}. 
 
 \begin{figure}[H]
     \centering
@@ -40,3 +40,37 @@ At first glance, there is not much to spot in the PCA decomposition of the exten
     \caption{Scatter-plot of the first two principal components of ESM embeddings extended into hyperdimensionality. These PCs account for roughly 22 \% of the total variance. The amino acids are annotated and colored based on their chemical property of polarity.}\label{fig:AAesm}
 \end{figure}
 
+Looking at the average neighborhood-encoded amino acids starting from ESM-2 embeddings (figures \ref{fig:AAtr4} and \ref{fig:AAtr50}), the charged amino acids seem to be grouped vertically by PC 2, roughly dividing the polar and non-polar amino acids, albeit slightly more pronounced for $n = 50$. Also interesting, to see very similar groupings in the PCA plots could indicate that the first four amino acids before and after a residue are the most crucial.
+
+The PCA scatter plots generated from random vectors (figures \ref{fig:AArtr4} and \ref{fig:AArtr50}) slightly different results as compared to the ones starting from ESM embeddings. These PCAs also capture less variance which may indicate that encoding biological information/similarities into the vectors beforehand might be necessary. For $k = 4$, some typicalities are noticed such as the close grouping of the negatively charged amino acids and the triangular grouping of H, L and R. Nonetheless, for $k = 50$ we see results deviating from all the PCA scatter plots of other neighborhood-encoded amino acids.
+
+\begin{figure}[H]
+    \label{fig:bigfig}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{4tr_emb}
+        \caption{Average neighborhood-endcoded amino acids starting from extended ESM-2 embeddings. These PCs account for roughly 21 \% of the total variance. $n = 4$}
+        \label{fig:AAtr4}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{50tr_emb}
+        \caption{Average neighborhood-endcoded amino acids starting from extended ESM-2 embeddings. These PCs account for roughly 21 \% of the total variance. $n = 50$}
+        \label{fig:AAtr50}
+    \end{subfigure}
+    \vspace{10pt} % Add vertical space between rows
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{r4tr_emb}
+        \caption{Average neighborhood-endcoded amino acids starting from random hyperdiemnsional vectors. These PCs account for roughly 11 \% of the total variance.  $n = 4$}
+        \label{fig:AArtr4}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{r50tr_emb}
+        \caption{Average neighborhood-endcoded amino acids starting from random hyperdiemnsional vectors. These PCs account for roughly 11 \% of the total variance.  $n = 50$}
+        \label{fig:AArtr50}
+    \end{subfigure}
+    \caption{Scatter-plots of the first two principal components of the average amino acid HDVs with neighborhood-information of $n = 4$ and $n = 50$ encoded, learned from the human reference proteome. The top row represents encoded amino acids starting from extended ESM-2 embeddings, and the bottom-row represents encoded amino acids starting from random hyperdimensional vectors. The amino acids are annotated and colored based on their chemical property of polarity.}
+\end{figure}
+
+In Rives \textit{et al.} (2011)~\cite{esm1}, they conducted a similar experiment with their transformer model. Our results are comparable to theirs, but not as cleanly grouped which is likely due to several factors. First, the amount of data we used is not comparable to theirs: our method less than 21000 sequences whilst their model was trained on 250 million sequences. They also included sequences originating from all recorded organisms in the UniProt database at that time whilst we confined ourselves to human sequences. Secondly, hyperdimensional vectors have a limited capacity, which is more thoroughly discussed in section~\ref{ssec:purehdc}, meaning long-range dependencies of a residue will saturate the hyperdimensional vector depending on the range. Due to the intrinsic randomness of hyperdimensional computing, it is also prone to capture some amount of noise. UMAP projections were also made, shown in section~\ref{app:chp3} in the appendices, but these did not reveal any new information. Applying these HDVs to other real-world problems should reveal the performance and usefulness of the neighborhood-encoding.
