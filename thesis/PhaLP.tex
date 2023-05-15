@@ -27,7 +27,7 @@ There was no visual difference between the PCA plots for the bag-of-words method
 \subsection*{Naive hyperdimensional addition}\label{ssec:purehdc}
 As a baseline level, we use the rudimentary HDV classification technique as seen in chapter~\ref{sec:example}: the HDVs of sequences of the same class are bundled to construct single HDVs representative of every class. Then, a sequence's class is inferred by comparing the sequence's HDV to both class HDV \textit{via} a similarity measure based on the assumption that the class vector is maximally similar to its components. This model was evaluated \textit{via} a stratified 10-fold cross validation.
 \begin{table}[h]
-    \caption{\label{tab:phalpclass}Results of type classifications using the principal classification technique of hyperdimensional computing and an XGBoost classifier with several kinds of embeddings}
+    \caption{\label{tab:phalpclass}Results of type classifications using the principal classification technique of hyperdimensional computing,an XGBoost classifier and OnlineHD implementations with several kinds of embeddings}
     \resizebox{\textwidth}{!}{\begin{tabular}{|c||c|c|c|c|}
         \hline
         \underline{F1-scores} & \textbf{BoW/random} & \textbf{BoW/ESM} & \textbf{Convolutional/random} & \textbf{Convolutional/ESM} \\
@@ -35,6 +35,10 @@ As a baseline level, we use the rudimentary HDV classification technique as seen
         \textbf{Naive addition} & 0.1458 & 0.1468 & 0.1461 & 0.1461 \\
         \hline
         \textbf{XGBoost classifier} & 0.9667 & 0.9754 & 0.9661 & 0.986 \\
+        \hline
+        \textbf{Single-pass OnlineHD} & 0.8901 & 0.9214 & 0.7793 & 0.8400 \\
+        \hline
+        \textbf{Iterative OnlineHD} & 0.9487 & 0.9757 & 0.9486 & 0.9670 \\
         \hline
     \end{tabular}}
 \end{table}
