@@ -1,4 +1,4 @@
-\chapter{PHALP case study:\\hyperdimensional protein sequence embedding}
+\chapter{PhaLP case study:\\hyperdimensional protein sequence embedding}
 \section{PhaLP database}
 To implement and evaluate hyperdimensional computing in typical problem settings in computational biology, the potential of hyperdimensional computing will be evaluated on the PhaLP dataset~\cite{phalp} in this chapter. PhaLP is a comprehensive database currently comprising more than 17000 entries of phage lytic proteins including much of their information such as their type, domains and tertiary structures. Phage lytic proteins are used by bacteriophages to infect bacterial cells. To cross the bacterial cell walls, phages use two different types of phage lytic proteins: virion-associated lysins (VALs) and endolysins. Phage lytic proteins also comprise one or more functional domains categorized into two classes: enzymatically active domains (EADs) and cell wall binding domains (CBDs).
 
@@ -27,7 +27,7 @@ We also introduce a novel sequence embedding method in hyperdimensional computin
     \label{fig:cnn}
 \end{figure}
 
-These two sequence embedding methods have been applied to all sequences in the dataset using both random hyperdimensional vectors and extended ESM-2 embeddings MAYBE MORE IN FUTURE. These were then visually assessed \textit{via} PCA.
+These two sequence embedding methods have been applied to all sequences in the dataset using both random hyperdimensional vectors and extended ESM-2 embeddings. These were then visually assessed \textit{via} PCA.
 
 \subsection*{Classification of hyperdimensional protein sequence embeddings}
 As a baseline level, we use the rudimentary HDV classification technique as seen in chapter~\ref{sec:example}: the HDVs of sequences of the same class are bundled to construct single HDVs representative of every class. Then, a sequence's class is inferred by comparing the sequence's HDV to both class HDV \textit{via} a similarity measure based on the assumption that the class vector is maximally similar to its components. This model was evaluated \textit{via} a stratified 10-fold cross validation, trained and tested with all non-ML annotated proteins in the dataset. Out of the 11549 unambiguous UniParc accessions in the newest version of the database, 4829 are manually annotated on their type. Out of these manually annotated proteins, 2803 are endolysins and 2026 are VALs.
@@ -97,7 +97,7 @@ THIS PART MAYBE IN DISCUSSION IF THAT WILL BE SEPERATE? We can predict the angle
 
 The results of the XGBoost classifer for the same embeddings are much more comparable to the results of the experiment in the PhaLP paper with the convolutional embeddings generally performing better than the bag-of-words embeddings and also the ESM-based embeddings performing better than random base vectors. This is an indication that hyperdimensional computing can provide a very fast and reliable method of embedding protein sequences, even without prior biological information. The drawback of this machine learning model, which is to be expected from every gradient-based model, is that training and predictions take much longer to compute compared to hyperdimensional training models. The cross validation procedure took up to 5 minutes on a consumer-grade laptop, whilst with the naive additive approach, the procedure took less than 10 seconds to finish.
 
-Comparing the results of the OnlineHD models to the naive additive HDC model, we can see a substantial increase in the performance of this model. The single-pass model seems to have more widely varying results depending on the type of embeddings used. As opposed to the XGBoost classifier, it performs better using bag-of-words embeddings. The model also performs better when trained with embeddings based on extended ESM-2 vectors. Iterative retraining of the model seems to increase its performance significantly, even coming close to the performance of an XGBoost classifier in this case. Further improvement might be found when optimizing the models' parameters. The cross validation procedure takes less than 10 seconds to run for the single-pass model, whilst doing an iterative retraining of the model adds 2 to 3 minutes. This model appears to be a decently performing extension of the rudimentary hyperdimensional classification model for protein language modeling, whilst still being much more efficient than the commonly used machine learning models. The drawback of the model is that we cannot use hyperefficient bit-operations anymore, which limits its efficiency compared to the binary nature of the additive model.
+Comparing the results of the OnlineHD models to the naive additive HDC model, we can see a substantial increase in the performance of this model. The single-pass model seems to have more widely varying results depending on the type of embeddings used. As opposed to the XGBoost classifier, it performs better using bag-of-words embeddings. The model also performs better when trained with embeddings based on extended ESM-2 vectors. Iterative retraining of the model seems to increase its performance significantly, even coming close to the performance of an XGBoost classifier in this case. Further improvement might be found when optimizing the models' parameters. The cross validation procedure takes less than 10 seconds to run for the single-pass model, whilst doing an iterative retraining of the model adds 2 to 3 minutes. This model appears to be a decently performing extension of the rudimentary hyperdimensional classification model for protein classification, whilst still being much more efficient than the commonly used machine learning models. The drawback of the model is that we cannot use hyperefficient bit-operations anymore, which limits its efficiency compared to the binary nature of the additive model.
 
 \begin{figure}[h!]
     \centering
@@ -128,7 +128,7 @@ Comparing the results of the OnlineHD models to the naive additive HDC model, we
     \label{fig:main2}
 \end{figure}
 
-In figure~\ref{fig:main2}, we aim to monitor the training process of the OnlineHD single-pass model when applied to the PhaLP dataset. To track the training progress, we calculate the absolute difference between the cosine similarities, $cos_{VAL}$ and $cos_{endo}$, as described in equations 4.3 and 4.4. These differences are averaged across all 10 cross-validation folds. By observing this metric, we can gain insights into the performance and consistency of the OnlineHD model during training. we expect the difference in cosine similarities to increase throughout the training procedure as the model learns to differentiate the two classes. However, these differences don't increase noticeably increase in this case.
+In figure~\ref{fig:main2}, we aim to monitor the training process of the OnlineHD single-pass model when applied to the PhaLP dataset. To track the training progress, we calculate the absolute difference between the cosine similarities, $cos_{VAL}$ and $cos_{endo}$, as described in equations 4.3 and 4.4. These differences are averaged across all 10 cross-validation folds. By observing this metric, we can gain insights into the behavior of the hyperdimensional vectors in the OnlineHD model during training. we expect the difference in cosine similarities to increase throughout the training procedure as the model learns to differentiate the two classes. However, these differences don't increase noticeably increase in this case.
 
 \begin{figure}[htbp]
     \centering
@@ -189,3 +189,36 @@ In Figure~\ref{fig:main}, we aim to monitor the two class vectors $\vec{C_{VAL}}
 In this case, the VAL vector updates with relatively consistent weights. This observation, together with Figure~\ref{fig:phalpbowesm}, suggests that virion-associated lysins may have more diverse sequences compared to endolysins. We also notice higher overall similarities between the query vectors and the VAL vector when using the BoW-method with extended ESM-2 vectors, which aligns with this model's superior performance.
 
 The endolysin vector appears to slightly increase its similarity to the query vectors as it trains, with less variation in similarities, indicating that endolysins may have less diverse sequences. As observed with the VAL vectors, the similarities between the query vectors and the endolysin vector are higher when the embeddings are created using the BoW-method with extended ESM-2 vectors.
+
+In figure~\ref{fig:main3}, we employ a different kind of approach in following the training of an OnlineHD model. The dataset is split into a train and test set (whilst taking stratification into account) with the test set comprising 10 \% of the data. The train data is split up into 500 batches and the model is trained in batches. After each batch, the model's performance is evaluated with the test data.
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{phalp_bow_rand_score}
+        \caption{Embeddings using random amino acid vectors, made \textit{via} the bag-of-words embedding method}
+        \label{fig:subfig-a3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{phalp_bow_esm_score}
+        \caption{Embeddings using extended ESM-2 amino acid vectors, made \textit{via} the bag-of-words embedding method}
+        \label{fig:subfig-b3}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{phalp_cnn_rand_score}
+        \caption{Embeddings using random amino acid vectors, made \textit{via} the convolutional embedding method}
+        \label{fig:subfig-c3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{phalp_cnn_esm_score}
+        \caption{Embeddings using extended ESM-2 acid vectors, made \textit{via} the convolutional embedding method}
+        \label{fig:subfig-d3}
+    \end{subfigure}
+    \caption{The F1-score of the OnlineHD single-pass model with a validation set throughout its training procedure. Trained in batches using several kinds of hyperdimensional embeddings from all protein sequences in the PhaLP dataset whose types were manually annotated.}
+    \label{fig:main3}
+\end{figure}
+
+Upon initial observation, it is apparent that the models trained with embeddings generated using the convolutional method exhibit superior performance from the outset. This higher starting point might be partially attributed to the random initialization of the model. However, a common characteristic observed across all models is that their performance tends to stagnate after approximately 100 batches, which corresponds to roughly 870 sequences in our case. This observation suggests that hyperdimensional computing-based classification methods may exhibit promising performance and effectively capture essential information, even after being exposed to just a small fraction of the training data, which is an intriguing finding for further exploration.
