@@ -63,9 +63,26 @@ The PCA of the real-valued extended ESM-2 vectors appears to capture a greater p
 \label{fig:AAesmreal}
 \end{figure}
 
-The outcomes of employing a genetic algorithm to infer our target distances can be found in the tables located in section~\ref{app:chp3} of the appendices. Despite our efforts, the obtained distances remain significantly different from the desired values, which led us to discontinue further exploration of these vectors. This discrepancy is likely attributable to the vast search space associated with the problem, resulting in substantial computational time required to reach the target matrix. The optimization process consumed approximately 58 hours on a high-performance computing (HPC) system. Unfortunately, utilizing a genetic algorithm does not appear to be a viable method for optimizing our vectors within an acceptable timeframe.
+The outcomes of employing a genetic algorithm to infer our target distances can be found in the tables located in section~\ref{app:chp3} of the appendices. Taking into account that two random hyperdimensional vectors would be quasi-orthogonal just by stochastics, their Hamming distances would be close to 0.5. Hence, one could see that despite our efforts, our obtained distances remain significantly different from the desired values and still indicate quasi-orthogonality, which led us to discontinue further exploration of these vectors. This discrepancy is likely attributable to the vast search space associated with the problem, resulting in substantial computational time required to reach the target matrix. The optimization process consumed approximately 58 hours on a high-performance computing (HPC) system. Unfortunately, utilizing a genetic algorithm does not appear to be a viable method for optimizing our vectors within an acceptable timeframe.
 
-Looking at the average neighborhood-encoded amino acids starting from ESM-2 embeddings and the human proteome (figures \ref{fig:AAtr4} and \ref{fig:AAtr50}), the charged amino acids seem to be grouped vertically by PC 2, roughly dividing the polar and non-polar amino acids, albeit slightly more pronounced for $n = 50$. Also interesting, to see very similar groupings in the PCA plots could indicate that the first four amino acids before and after a residue are the most crucial.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{granttarget.png}
+        \caption{Normalized Grantham's distance matrix.}
+        \label{fig:grant}
+    \end{subfigure}
+        \hspace{1cm}
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{blosumtarget}
+        \caption{Normalized amino acid distance matrix based on BLOSUM62.}
+        \label{fig:blosum}
+    \end{subfigure}
+    \caption{Heatmap of the target pairwise amino acid distances, based on a) Grantham's distance matrix b) BLOSUM62 matrix.}
+    \label{fig:ga}
+    \end{figure}
+
+Looking at the average neighborhood-encoded amino acids starting from ESM-2 embeddings and the human proteome (figures \ref{fig:AAtr4} and \ref{fig:AAtr50}), the charged amino acids seem to be grouped vertically by PC 2, roughly dividing the polar and non-polar amino acids, albeit slightly more pronounced for $n = 50$. Also interesting, to see very similar groupings in the PCA plots might indicate that the first four amino acids before and after a residue are the most crucial.
 
 The PCA scatter plots generated from random vectors (figures \ref{fig:AArtr4} and \ref{fig:AArtr50}) show slightly different results as compared to the ones starting from ESM embeddings. These PCAs also capture less variance which may indicate that encoding biological information/similarities into the vectors beforehand might be necessary. For $k = 4$, some typicalities are noticed such as the close grouping of the negatively charged amino acids (D and E) and the consistent triangular grouping of H, L and R. Nonetheless, for $k = 50$ we see results deviating from all the PCA scatter plots of other neighborhood-encoded amino acids.
 
@@ -98,4 +115,4 @@ The PCA scatter plots generated from random vectors (figures \ref{fig:AArtr4} an
     \caption{Scatter-plots of the first two principal components of the average amino acid HDVs with neighborhood-information of $n = 4$ and $n = 50$ encoded, learned from the human reference proteome. The top row represents encoded amino acids starting from extended ESM-2 embeddings, and the bottom row represents encoded amino acids starting from random hyperdimensional vectors. The amino acids are annotated and colored based on their chemical property of polarity.}
 \end{figure}
 
-In Rives \textit{et al.} (2011)~\cite{esm1}, they conducted a similar experiment with their transformer model. Our results are comparable to theirs, but not as cleanly grouped which is likely due to several factors. First, the amount of data we used is not comparable to theirs: our method less than 21000 sequences whilst their model was trained on 250 million sequences. They also included sequences originating from all recorded organisms in the UniProt database at that time whilst we confined ourselves to human sequences. Secondly, hyperdimensional vectors have a limited capacity, which is more thoroughly discussed in section~\ref{ssec:purehdc}, meaning long-range dependencies of a residue will saturate the hyperdimensional vector depending on the range. Due to the intrinsic randomness of hyperdimensional computing, it is also prone to capture some amount of noise. UMAP projections were also made, shown in section~\ref{app:chp3} in the appendices, but these did not reveal any new information. Applying these HDVs to other real-world problems should reveal the performance and usefulness of the neighborhood-encoding.
+In Rives \textit{et al.} (2011)~\cite{esm1}, they conducted a similar experiment with their transformer model. Our results are comparable to theirs, but not as cleanly grouped which is likely due to several factors. First, the amount of data we used is not comparable to theirs: our method less than 21000 sequences whilst their model was trained on 250 million sequences. They also included sequences originating from all recorded organisms in the UniProt database at that time whilst we confined ourselves to human sequences. Secondly, hyperdimensional vectors have a limited capacity, which is more thoroughly discussed in section~\ref{ssec:purehdc}, meaning long-range dependencies of a residue will saturate the hyperdimensional vector depending on the range. Due to the intrinsic randomness of hyperdimensional computing, it is also prone to capture some amount of noise. UMAP projections were also made, shown in appendix A, but these did not reveal any new information. Applying these HDVs to other real-world problems should reveal the performance and usefulness of the neighborhood-encoding.

@@ -190,7 +190,7 @@ In this case, the VAL vector updates with relatively consistent weights. This ob
 
 The endolysin vector appears to slightly increase its similarity to the query vectors as it trains, with less variation in similarities, indicating that endolysins may have less diverse sequences. As observed with the VAL vectors, the similarities between the query vectors and the endolysin vector are higher when the embeddings are created using the BoW-method with extended ESM-2 vectors.
 
-In figure~\ref{fig:main3}, we employ a different kind of approach in following the training of an OnlineHD model. The dataset is split into a train and test set (whilst taking stratification into account) with the test set comprising 10 \% of the data. The train data is split up into 500 batches and the model is trained in batches. After each batch, the model's performance is evaluated with the test data.
+In Figure~\ref{fig:main3}, we adopt an alternative approach to monitor the training progress of an OnlineHD model. The dataset is divided into training and testing sets, while ensuring stratification is preserved, with the test set comprising 10 \% of the data. The training data is further partitioned into 500 batches, and the model is trained incrementally using these batches. After each batch is processed, the model's performance on the test data is assessed to provide insights into its learning trajectory.
 
 \begin{figure}[h!]
     \centering
