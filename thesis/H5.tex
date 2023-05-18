@@ -10,23 +10,111 @@ As single-layer perceptrons can only solve linearly separable problems, research
 By combining the residue neighborhood encoding method with perceptron-based models, we could develop more computationally efficient alternatives to state-of-the-art transformer-based models. These models may provide valuable insights into protein sequences and amino acids while being more suitable for scenarios with limited computational resources.
 
 \section{Methods}
-We used the training dataset compiled by Klausen \textit{et al.} for their model protein language model Netsurf 2.0~\cite{netsurf} as our training dataset. It contains 10,337 protein sequences obtained from the Protein Data Bank (PDB)~\cite{pdb}. Each residue in these sequences is annotated with its 3- and 8-class secondary structure classification, providing a comprehensive description of the protein's structural properties. The residues have been encoded using our neighborhood-encoder as described in section~\ref{sec:trans} with $k=25$ and $k=100$ using random hyperdimensional vectors for each amino acid. Due to computational memory constraints, we randomly selected 60 \% of the sequences from the original dataset for training and testing, ensuring a representative sample of the data.
+We used the training dataset compiled by Klausen \textit{et al.} for their model protein language model Netsurf 2.0~\cite{netsurf} as our training dataset. It contains 10,337 protein sequences obtained from the Protein Data Bank (PDB)~\cite{pdb}. Each residue in these sequences is annotated with its 3- and 8-class secondary structure classification, providing a comprehensive description of the protein's structural properties. The residues have been encoded using our neighborhood-encoder as described in section~\ref{sec:trans} with $n=25$ and $n=100$ using random hyperdimensional vectors for each amino acid. Due to computational memory constraints, we randomly selected 60 \% of the sequences from the original dataset for training and testing (80 \% and 20 \% respectively), ensuring a representative sample of the data.
 
 As for the perceptron-based model, to decrease the computational time, we opted to build, train and evaluate the model in Python due to its support for computations on GPUs on our systems. We employed PyTorch-Lightning v1.8.4 for model construction and training and CUDA v11.7.0 on a high-performance computing (HPC) cluster equipped with an NVIDIA V100 GPU. The model comprised fully-connected layers with an input layer size equal to the dimension of the hyperdimensional vectors (10,000 in this case). Depending on the secondary structure classification desired, the output layer size was set to either 3 or 8. We used a batch size of 128 during training. Between each layer, we incorporated a ReLU (Rectified Linear Unit) activation function to introduce non-linearity into the model. The training loss was monitored using cross-entropy loss, which is well-suited for multi-class classification problems. To optimize the model, we employed the widely-used ADAM optimizer. We evaluated various configurations and hyperparameters to determine the best-performing but still computationally feasible approach:
 
-\begin{outline}
-    \1 SLP
-      \2 Learning rate: 0.03
-      \2 Epochs: 100
-    \1 MLP with one hidden layer
-      \2 Learning rate: 0.003
-      \2 Epochs: 200
-      \2 Hidden layer size: 500
-    \1 MLP with 10 hidden layers
-      \2 Learning rate: 0.0001
-      \2 Epochs: 200
-      \2 Hidden layer sizes: 8000, 5000, 2000, 1000, 800, 500, 200, 100, 50, 20
-\end{outline}
+\begin{table}[h]
+    \caption{Overview of model configurations and hyperparameters tested}
+    \label{tab:casp3}
+    \centering
+    \begin{tabular}{l|ccc}
+        \toprule
+         & Epochs & Learning rate & Size hidden layer(s)\\
+        \midrule
+        \textbf{SLP} & 100 & 0.03 & /\\
+        \hline
+        \textbf{1-layer MLP} & 50 & 0.003 & 500\\
+        \hline
+        \textbf{10-layer MLP} & 200 & 0.0003 & \makecell{8000-5000-2000-1000-800-\\500-200-100-50-20}\\
+        \bottomrule
+    \end{tabular}
+  \end{table}
 
-As test datasets, we opted to use the sequences CB513~\cite{cb513} and CASP12~\cite{casp12} since they are easily attainable and commonly used by researchers as benchmark datasets for protein language models. The MLP model with 10 hidden layers was trained using 60 \% of the training data and then evaluated using these test datasets.
+As test datasets, we opted to use the sequences CB513~\cite{cb513} and CASP12~\cite{casp12} since they are easily attainable and commonly used by researchers as benchmark datasets for protein language models. The MLP model with 10 hidden layers was trained using 60 \% of the training data and then evaluated using these test datasets. For extra validation, random dummy data was generated 
+
 \section{Results}
+A review of figure~\ref{fig:main8} demonstrates notable issues with the SLP model's ability to train effectively on our dataset. This is signaled by the substantial fluctuations in both loss and validation performance, a trend suggesting an inherent instability in the learning process of this model. Additionally, the 1-layer MLP model also exhibits problematic behavior, as it does not learn as seen in its losscurves in figure~\ref{fig:main83}. tOn top of that, it defaults to prediction of only one single class during validation (the class with the highest proportion), resulting in the large discrepancy between the accuracy and F1-score. These limitations lead to our decision to discontinue further investigations and experimentation with these particular models.
+
+Figure~\ref{fig:main8e} presents the outcome of the training procedure when applied to 60 \% of the NetSurf 2.0's training data, with a training-test data split of 0.8-0.2. The model was tested under various conditions, including 3 and 8 secondary structure classifications (denoted as dssp3 and dssp8, respectively), and with a range of hyperdimensional embeddings, developed using neighborhood-encoding ($n = 25$ and $n=100$).
+
+In contrast to the SLP and the 1-layer MLP models, the performance of the 10-layer MLP model demonstrates much more stable and consistent behavior throughout the training process, as evidenced by the performance and loss metrics, even though the resulting performance remains generally low. Although this stability may partially result from the lower learning rate, the model's computational feasibility made it an option for further investigation, prompting us to select this 133,343,733-parameter model for our subsequent tests with various datasets.
+
+\begin{table}[h]
+    \caption{Accuracies of secondary structure classification of a 10-layer MLP model trained on 60 \% of NetSurf 2.0's training data encoded into different kinds of hyperdimensional embeddings made with neighborhood-encoding ($n = 25$ and $n=100$). Tested on 3 and 8 secondary structure classifications (ss3 and ss8 respectively) of the CASP12 and CB513 dataset. Performance with dummy data was also assessed.}
+    \label{tab:casp}
+    \centering
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Accuracy} & CASP12 & CB513 & Random\\
+        \midrule
+        \textbf{n25-ss3} & 0.369 & 0.3548 & 0.3411\\
+        \textbf{n25-ss8} & 0.2488 & 0.2101& 0.2109\\
+        \textbf{n100-ss3} & 0.3933 & 0.3761 & 0.3874\\
+        \textbf{n100-ss8} & 0.2313 & 0.2086 & 0.2053\\
+        \bottomrule
+    \end{tabular}
+  \end{table}
+
+  \begin{table}[h]
+    \caption{F1-scores of secondary structure classification of a 10-layer MLP model trained on 60 \% of NetSurf 2.0's training data encoded into different kinds of hyperdimensional embeddings made with neighborhood-encoding ($n = 25$ and $n=100$). Tested on 3 and 8 secondary structure classifications (ss3 and ss8 respectively) of the CASP12 and CB513 dataset. Performance with dummy data was also assessed.}
+    \label{tab:casp}
+    \centering
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Accuracy/F1} & CASP12 & CB513 & Random\\
+        \midrule
+        \textbf{n25-ss3} & 0.3750 & 0.3552 & 0.3435\\
+        \textbf{n25-ss8} & 0.1861 & 0.1530 & 0.1479\\
+        \textbf{n100-ss3} & 0.3719 & 0.3568 & 0.3607\\
+        \textbf{n100-ss8} & 0.2025 & 0.1803 & 0.1780\\
+        \bottomrule
+    \end{tabular}
+  \end{table}
+
+Following the training process, we evaluated the fully trained 10-layer MLP model on the test datasets, with the results summarized in Table~\ref{tab:casp}. To validate our findings, we also generated a random dummy dataset for comparison. Disappointingly, the model's performance on our test data did not surpass its performance on the randomly generated data. This observation may indicate that a relatively simplistic neural network is incapable of efficiently learning from high-dimensional sparse vectors. Alternatively, it may indicate that our neighborhood-encoding algorithm requires additional refinement and optimization to improve its resulting embeddings.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_fullk25_dssp3_loss}
+        \label{fig:subefig}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlpfull_k25_dssp3_score}
+        \label{fig:subefi}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_fullk25_dssp8_loss}
+        \label{fig:subef}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlpfull_k25_dssp8_score}
+        \label{fig:sube}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_fullk100_dssp3_loss}
+        \label{fig:sue}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlpfull_k100_dssp3_score}
+        \label{fig:se}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_full_k100_dssp8_loss}
+        \label{fig:sge}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlpfull_k100_dssp8_score}
+        \label{fig:she}
+    \end{subfigure}
+    \caption{Performance of training procedure of the 10-layer MLP model on 60 \% of NetSurf 2.0's training data, 0.8-0.2 training-test data split. Tested on 3 and 8 secondary structure classifications (dssp3 and dssp8 respectively) and with different kinds of hyperdimensional embeddings made with neighborhood-encoding ($n = 25$ and $n=100$).}
+    \label{fig:main8e}
+  \end{figure}

@@ -135,4 +135,93 @@ $0.49$ & $0.49$ & $0.49$ & $0.48$ & $0.5$ & $0.49$ & $0.49$ & $0.49$ & $0.49$ & 
 $0.49$ & $0.49$ & $0.49$ & $0.49$ & $0.48$ & $0.5$ & $0.49$ & $0.5$ & $0.48$ & $0.49$ & $0.49$ & $0.5$ & $0.49$ & $0.49$ & $0.49$ & $0.49$ & $0.49$ & $0.49$ & $0.49$ & $0.0$
 \end{tabular}}
 \end{table}
-\chapter{Additional information on chapter 4}\label{app:chp4}
+\chapter{Additional information on chapter 5}\label{app:chp5}
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{slp_k25_dssp3_loss}
+        \label{fig:subfig}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{slp_k25_dssp3_score}
+        \label{fig:subfi}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{slp_k25_dssp8_loss}
+        \label{fig:subf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{slp_k25_dssp8_score}
+        \label{fig:sub}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{slp_k100_dssp3_loss}
+        \label{fig:su}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{slp_k100_dssp3_score}
+        \label{fig:s}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{slp_k100_dssp8_loss}
+        \label{fig:sg}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{slp_k100_dssp8_score}
+        \label{fig:sh}
+    \end{subfigure}
+    \caption{Performance of training procedure of the SLP on 60 \% of NetSurf 2.0's training data, 0.8-0.2 training-test data split. Tested on 3 and 8 secondary structure classifications (dssp3 and dssp8 respectively) and with different kinds of hyperdimensional embeddings made with neighborhood-encoding ($n = 25$ and $n=100$).}
+    \label{fig:main8}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_k25_dssp3_loss}
+        \label{fig:subfig}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_k25_dssp3_score}
+        \label{fig:subfi}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_k25_dssp8_loss}
+        \label{fig:subf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_k25_dssp8_score}
+        \label{fig:sub}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_k100_dssp3_loss}
+        \label{fig:su}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_k100_dssp3_score}
+        \label{fig:s}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_k100_dssp8_loss}
+        \label{fig:sg}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{mlp_k100_dssp8_score}
+        \label{fig:sh3}
+    \end{subfigure}
+    \caption{Performance of training procedure of the 1-layer MLP on 60 \% of NetSurf 2.0's training data, 0.8-0.2 training-test data split. Tested on 3 and 8 secondary structure classifications (dssp3 and dssp8 respectively) and with different kinds of hyperdimensional embeddings made with neighborhood-encoding ($n = 25$ and $n=100$).}
+    \label{fig:main83}
+  \end{figure}
