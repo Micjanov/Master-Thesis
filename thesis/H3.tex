@@ -1,12 +1,11 @@
 \chapter[Amino acid and protein encoding]{Hyperdimensional computing methods to encode amino acids and protein sequences}
 \section{Introduction}
-To research the possibilities of the hyperdimensional computing framework applied to protein language modeling, we introduce a rudimentary pipeline. First, amino acids would have to be encoded into hyperdimensional vectors. These vectors for every separate amino acid could be then further encoded into vectors representing a full protein. And lastly, these embeddings could be then utilized to perform predictions such as classifications as shown in figure~\ref{piepline}. The first two steps of this pipeline will be discussed further in this chapter.
+To research the possibilities of the hyperdimensional computing framework applied to protein language modeling, we introduce a rudimentary pipeline. First, amino acids would have to be encoded into hyperdimensional vectors. These vectors for every separate amino acid could be then further encoded into vectors representing a full protein. And lastly, these embeddings could be then utilized to perform predictions such as classifications as shown in figure~\ref{fig:pipeline}. The first two steps of this pipeline will be discussed further in this chapter.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.5]{pipeline}
-    \caption{A simple demonstration of our workflow. First, we encode single amino acids into hyperdimensional vectors. With these, protein sequences could be encoded into hyperdimensional vectors. Lastly, both kinds of embeddings are then used for prediction tasks.}
-    \label{fig:pipeline}
+    \caption{A simple demonstration of our workflow. First, we encode single amino acids into hyperdimensional vectors. With these, protein sequences could be encoded into hyperdimensional vectors. Lastly, both kinds of embeddings are then used for prediction tasks.}\label{fig:pipeline}
 \end{figure}
 
 \section{Encoding single amino acids into hyperdimensional vectors}
@@ -17,16 +16,16 @@ When considering protein language modeling, however, this assumption might be su
 Besides encoding amino acids as building blocks, it is also useful to encode amino acids in the context they are found in. State-of-the-art protein language models have the ability to gather information on long-range dependencies around a single amino acid and encode this information into neural networks and in dense numerical vectors. These models are very powerful, but as discussed earlier very resource-intensive too. To investigate the possibilities of developing contextual embeddings on the level of amino acids, we propose a novel encoding technique within the hyperdimensional computing framework.
 
 \section{Encoding proteins into hyperdimensional vectors}
-In section~\ref{ssec:hyperprotclas}, we introduced the bag-of-words (BoW) method of embedding sequences in hyperdimensional space which has been extensively applied to cases related to natural language processing in a hyperdimensional computing context. We also introduce a novel sequence embedding method in hyperdimensional computing.
+In section~\ref{ssec:protclas}, we introduced the bag-of-words (BoW) method of embedding sequences in hyperdimensional space which has been extensively applied to cases related to natural language processing in a hyperdimensional computing context. We also introduce a novel sequence embedding method in hyperdimensional computing.
 
 \section{Methods}
 From here on, every hyperdimensional vector is made to be 10,000-dimensional and binary unless noted otherwise. 
 \subsection*{Encoding single amino acids into hyperdimensional vectors}
 \subsubsection*{Extended ESM-2 embeddings}
-The last layer of the 3 billion-parameter ESM-2 model~\cite{esm2} of every amino acid was extracted, resulting in 1024-dimensional real-valued embeddings for every amino acid. To extend these into hyperdimensionality, a simple matrix multiplication has been employed: 
+The last layer of the 3 billion-parameter ESM-2 model~\cite{esm2} of every amino acid was extracted, resulting in 1024-dimensional real-valued embeddings for every amino acid. To project these into hyperdimensionality, a simple matrix multiplication has been employed: 
 \[A_{1x1024} \times B_{1024x10,000} = C_{1x10,000}\]
-Where $A$ is a 1024-dimensional ESM-2 embedding and B a matrix of 1024 random 10,000-D vectors. The resulting vectors are then min-max scaled and rounded depending on the desired nature of the vectors. To visually assess these, the vectors for each amino acids are reduced in dimensionality \textit{via} PCA into 2 dimensions. This has been compared to a PCA of the unaltered 1024-dimensional ESM-2 embeddings.
-\subsubsection*{Real-valued extended ESM-2 embeddings}
+Where $A$ is a 1024-dimensional ESM-2 embedding and B a matrix of 1024 random 10,000-D vectors. The resulting vectors are then min-max scaled and rounded depending on the desired nature of the vectors. To visually assess these, the vectors for each amino acid are reduced in dimensionality \textit{via} PCA into 2 dimensions. This has been compared to a PCA of the unaltered 1024-dimensional ESM-2 embeddings.
+\subsubsection*{Real-valued projected ESM-2 embeddings}
 It is possible to step away from binary hyperdimensional vectors, which are typically used in hyperdimensional computing research, and allow the vectors to be real-valued. This gives us the possibility to store more data in a vector and utilize more complex mathematical operations with the cost of losing efficiency of bit-operations. We generated random real-valued vectors with random values in [-1,1]. Real-valued ESM-2 embeddings were generated by the same procedure as above, but without the rounding.
 \subsubsection*{Enforcing similarities using genetic algorthims}
 Instead of utilizing embeddings coming from other large protein language models, we also experimented with encoding predetermined target pairwise distances onto initially random hyperdimensional vectors. First, a suitable matrix with predetermined pairwise distances has to be considered. This also implies that the matrix has to be symmetric. If we then consider the 20 essential amino acids, the problem at hand would involve a set of 20 binary vectors of length 10,000 to conform to a target distance matrix based on Hamming distance. This can be classified as a combinatorial optimization problem as it involves searching for an optimal or near-optimal configuration of binary vectors that satisfy a specific criterion. To minimize the difference between the target and actual Hamming distances for all pairs of binary vectors, we could adjust the vectors by randomly bit-flipping them until they meet the desired criteria. However, the search space in this problem is vast ($2^{10,000 x 20}$), making exhaustive search methods computationally infeasible. Thus, more efficient algorithms are needed to solve this problem such as genetic algorithms~\cite{GA} (GAs). GAs, a subfield of evolutionary algorithms, draw inspiration from the process of natural selection and emulate the evolutionary mechanisms of crossover, mutation, and selection to explore a vast search space and converge toward an optimal or near-optimal solution. A genetic algorithm was implemented with the \textit{Evolutionary.jl v0.11.1}~\cite{evojl} package in \textit{Julia} to encode target similarities. The primary steps of a genetic algorithm include:
@@ -38,31 +37,30 @@ Instead of utilizing embeddings coming from other large protein language models,
     \item Selection: individuals from the population are selected based on their fitness to create a mating pool. Fitter individuals have a higher probability of being selected, mimicking the concept of survival of the fittest in natural evolution.
 \end{itemize}
 These steps are reiterated over a number of generations to obtain a set of vectors that correspond to the best fitness. A \textit{BLOSUM62} substitution matrix \cite{blosum} and Grantham's distance matrix \cite{aa_evolution} were considered as target pairwise similarity matrices for the GA. These were then normalized to obtain the target pairwise Hamming distances. The fitness is determined by the sum of the squared differences between the computed distance matrix of an individual and the target distance matrix. The lower the fitness value, the more optimal the individual. The population size was set to 25000 and the number of generations to 250. The mutation rate was set to 0.15 and the crossover rate to 0.2, these are high and low respectively compared to more commonly used parameters because we want to emphasize the bit-flipping and avoid recombination of vectors for faster convergence.
-\subsubsection*{Contextualized neighborhood-encoding of amino acids}
-To encode the neighborhood of an amino acid in a sequence, all possible pairwise interactions with the central amino acid in question in a given window are made \textit{via} binding and then all encoded into one vector \textit{via} bundling as shown figure 3.2. Our neighborhood-encoder was tested on the human reference proteome in UniProt, entry \textit{UP000005640}, containing 20591 proteins. We started with real-valued random vectors and real-valued extended ESM-2 vectors for every amino acid. Windows of $n = 4$ and $k = 50$ were considered resulting in 4 different experiments. Every single residue in the human reference proteome was encoded with information within the k-range window and an average vector was made for every amino acid. For all 20591 peptides in the reference proteome, this procedure took only 3 hours for $n = 4$, but upwards to 15 hours for $n = 50$ on a high-performance computing cluster (HPC). After all amino acids were encoded, an element-wise average was made for every amino acid. The resulting hyperdimensional vectors were kept to a real-numbered nature to not lose information for illustrative purposes. Principal component analysis was then done for these 4 experiments as seen in figure 3.6. 
+\subsubsection*{Contextualized neighborhood-encoding of amino acids}\label{sssec:trans}
+To encode the neighborhood of an amino acid in a sequence, all possible pairwise interactions with the central amino acid in question in a given window are made \textit{via} binding and then all encoded into one vector \textit{via} bundling as shown figure~\ref{fig:AAtr}. Our neighborhood-encoder was tested on the human reference proteome in UniProt, entry \textit{UP000005640}, containing 20591 proteins. We started with real-valued random vectors and real-valued projected ESM-2 vectors for every amino acid. Windows of $n = 4$ and $k = 50$ were considered resulting in 4 different experiments. Every single residue in the human reference proteome was encoded with information within the k-range window and an average vector was made for every amino acid. For all 20591 peptides in the reference proteome, this procedure took only 3 hours for $n = 4$, but upwards to 15 hours for $n = 50$ on a high-performance computing cluster (HPC). After all amino acids were encoded, an element-wise average was made for every amino acid. The resulting hyperdimensional vectors were kept to a real-numbered nature to not lose information for illustrative purposes. Principal component analysis was then done for these 4 experiments as seen in figure~\ref{fig:bigfig}. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.43]{transformerlike}
-    \caption{A simple demonstration of our amino acid encoder. First, HDVs are generated for every kind of amino acid, this can be done using just random HDVs, extended ESM-2 embeddingsm, GA-optimized vectors etc. It considers an amino acid and all amino acids in a predetermined neighborhood (here $n = 2$). It produces all possible interactions of the central amino acid in the window by binding and then bundles all the pairwise interactions into one hyperdimensional vector that represents the central amino acid.}
-    \label{fig:AAtr}
+    \caption{A simple demonstration of our amino acid encoder. First, HDVs are generated for every kind of amino acid, this can be done using just random HDVs, projected ESM-2 embeddings, GA-optimized vectors etc. It considers an amino acid and all amino acids in a predetermined neighborhood (here $n = 2$). It produces all possible interactions of the central amino acid in the window by binding and then bundles all the pairwise interactions into one hyperdimensional vector that represents the central amino acid.}\label{fig:AAtr}
 \end{figure}
 
-\subsection*{Encoding proteins into hyperdimensional vectors}
-We implemented two different algorithms to encode amino acid vectors into vectors representing proteins. We already introduced the BoW-method in section 2.3, fully explained in figure~\ref{fig:diagram_exprot5}. We also introduce a novel sequence embedding method in hyperdimensional computing.  It is similar to the bag-of-words method in the sense that it bundles vectors of k-mers, but here, the k-mer's positional information will be encoded into the k-mer by permuting it before bundling as seen in figure~\ref{fig:cnn}, similarly to how a convolutional layer in a neural network operates so we will name it the convolutional embedding method from here on. These methods will be extensively utilized and tested in chapters 4 and 5 where several case studies consisting of protein sequences datasets are tackled.
+\subsection*{Encoding proteins into hyperdimensional vectors}\label{ssec:protseq}
+We implemented two different algorithms to encode amino acid vectors into vectors representing proteins. We already introduced the BoW-method in section~\ref{ssec:protclas}, fully explained in figure~\ref{fig:diagram_exprot5}. We also introduce a novel sequence embedding method in hyperdimensional computing.  It is similar to the bag-of-words method in the sense that it bundles vectors of k-mers, but here, the k-mer's positional information will be encoded into the k-mer by permuting it before bundling as seen in figure~\ref{fig:cnn}, similarly to how a convolutional layer in a neural network operates so we will name it the convolutional embedding method from here on. These methods will be extensively utilized and tested in chapters 4 and 5 where several case studies consisting of protein sequences datasets are tackled.
 
 \begin{figure}[h]
     \centering
     \includegraphics[scale = 0.6]{cnn.png}
-    \caption{Overview of operations done to obtain an HDV from a sequence using the convolutional embedding method. First, an HDV is generated for every amino acid. Next, a peptide sequence is to be considered as a bag of trimers. A vector representing a trimer is generated by binding the three amino acids whilst retaining sequential information by shifting as in equation~\ref{eqn:trimer}, just as in the BoW-method (figure~\ref{fig:diagram_exprot}). On top of that, every trimer will also be positionally encoded via a permutation operation. All retrievable trimers from a given sequence are then bundled together, forming a hyperdimensional vector representative of the sequence.}
-    \label{fig:cnn}
+    \caption{Overview of operations done to obtain an HDV from a sequence using the convolutional embedding method. First, an HDV is generated for every amino acid. Next, a peptide sequence is to be considered as a bag of trimers. A vector representing a trimer is generated by binding the three amino acids whilst retaining sequential information by shifting as in equation~\ref{eqn:trimer}, just as in the BoW-method (figure~\ref{fig:diagram_exprot}). On top of that, every trimer will also be positionally encoded via a permutation operation. All retrievable trimers from a given sequence are then bundled together, forming a hyperdimensional vector representative of the sequence.}\label{fig:cnn}
 \end{figure}
 
 \section{Results}
-\section*{Extended ESM-2 embeddings}
-Visually, no interesting patterns can be deducted from the PCA decompositions of the ESM-2 embeddings. Yet, if we also perform a principal component analysis on random vectors, we can see there is significantly more variance encoded into the first two principal components of the ESM embeddings (22 \%) compared to random vectors (10.5 \%, can deviate slightly depending on the run), meaning that there should be a significant amount of similarity encoded into the hyperdimensional vectors. PCA decomposition of our extended ESM-2 embeddings can't fully retrieve the variance in the hyperdimensional vectors as well as in the unaltered ESM-2 embeddings, as to be expected. The performance and usefulness may be shown more clearly when tested in other computational biology problem settings.
+\subsection*{Extended ESM-2 embeddings}
+Visually, no interesting patterns can be deducted from the PCA decompositions of the ESM-2 embeddings. Yet, if we also perform a principal component analysis on random vectors, we can see there is significantly more variance encoded into the first two principal components of the ESM embeddings (22 \%) compared to random vectors (10.5 \%, can deviate slightly depending on the run), meaning that there should be a significant amount of similarity encoded into the hyperdimensional vectors. PCA decomposition of our projected ESM-2 embeddings can't fully retrieve the variance in the hyperdimensional vectors as well as in the unaltered ESM-2 embeddings, as to be expected. The performance and usefulness may be shown more clearly when tested in other computational biology problem settings.
 
 \begin{figure}[H]
+\label{fig:combined_ESM_embeddings}
 \centering
 \begin{minipage}[b]{.5\textwidth}
     \begin{subfigure}[b]{\textwidth}
@@ -76,7 +74,7 @@ Visually, no interesting patterns can be deducted from the PCA decompositions of
 \begin{minipage}[b]{.5\textwidth}
 \begin{subfigure}[b]{\textwidth}
     \includegraphics[width=\textwidth]{esm_emb}
-    \caption{ESM-2 embeddings extended into binary hyperdimensionality}
+    \caption{ESM-2 embeddings projected into binary hyperdimensionality}
     \label{fig:AAesm}
 \end{subfigure}
 \end{minipage}
@@ -85,16 +83,14 @@ Visually, no interesting patterns can be deducted from the PCA decompositions of
 \begin{minipage}[b]{.5\textwidth}
 \begin{subfigure}[b]{\textwidth}
     \includegraphics[width=\textwidth]{esm_emb_HDVreal}
-    \caption{Real-value extended ESM-2 embeddings.}
-    \label{fig:AAesmreal}
+    \caption{Real-value projected ESM-2 embeddings.}\label{fig:AAesmreal}
 \end{subfigure}
 \end{minipage}
-\caption{Scatter-plots of the first two principal components of ESM-2 embeddings for amino acids. (a) Unaltered 1024-dimensional ESM-2 embeddings, accounting for roughly 79 \% of the total variance. (b) ESM-2 embeddings extended into hyperdimensionality, accounting for roughly 22 \% of the total variance. (c) real-valued extended ESM-2 embeddings, accounting for roughly 28.5 \%. In all subfigures, amino acids are annotated and colored based on their chemical property of polarity.}
-\label{fig:combined_ESM_embeddings}
+\caption{Scatter-plots of the first two principal components of ESM-2 embeddings for amino acids. (a) Unaltered 1024-dimensional ESM-2 embeddings, accounting for roughly 79 \% of the total variance. (b) ESM-2 embeddings projected into hyperdimensionality, accounting for roughly 22 \% of the total variance. (c) real-valued projected ESM-2 embeddings, accounting for roughly 28.5 \%. In all subfigures, amino acids are annotated and colored based on their chemical property of polarity.}
 \end{figure}
 
-\subsubsection*{Real-valued extended ESM-2 embeddings}
-The PCA of the real-valued extended ESM-2 vectors, as seen in figure 3.4c, appears to capture a greater proportion of the variance compared to their binary counterparts. This increased detected variance is likely attributed to the reduction in data loss that occurs when avoiding the rounding off of values. The effectiveness of these real-valued extended ESM-2 vectors in various tasks will be further investigated and evaluated in subsequent analyses.
+\subsection*{Real-valued projected ESM-2 embeddings}
+The PCA of the real-valued projected ESM-2 vectors, as seen in figure~\ref{fig:AAesmreal}, appears to capture a greater proportion of the variance compared to their binary counterparts. This increased detected variance is likely attributed to the reduction in data loss that occurs when avoiding the rounding off of values. The effectiveness of these real-valued projected ESM-2 vectors in various tasks will be further investigated and evaluated in subsequent analyses.
 
 \subsection*{Enforcing similarities using genetic algorthims}
 The outcomes of employing a genetic algorithm to infer our target distances can be found in the tables located in section~\ref{app:chp3} of the appendices. These are visually presented as heatmaps in figure~\ref{fig:ga}. Taking into account that two random hyperdimensional vectors would be quasi-orthogonal just by stochastics, their Hamming distances would be close to 0.5. Hence, one could see that despite our efforts, our obtained distances remain significantly different from the desired values and still indicate quasi-orthogonality, which led us to discontinue further exploration of these vectors. This discrepancy is likely attributable to the vast search space associated with the problem, resulting in substantial computational time required to reach the target matrix. The optimization process ran for approximately 58 hours on a high-performance computing (HPC) system. Unfortunately, utilizing a genetic algorithm does not appear to be a viable method for optimizing our vectors within an acceptable timeframe.
@@ -126,26 +122,25 @@ The outcomes of employing a genetic algorithm to infer our target distances can 
         \label{fig:random}
     \end{subfigure}
     \end{minipage}
-    \caption{Heatmap of the target pairwise amino acid distances, based on a) Grantham's distance matrix b) BLOSUM62 matrix and heatmap of c) the achieved distances.}
+    \caption{Heatmap of the target pairwise amino acid distances, based on (a) Grantham's distance matrix (b) BLOSUM62 matrix and heatmap of (c) the achieved distances.}
     \label{fig:ga}
 \end{figure}
-\subsubsection*{Contextualized neighborhood-encoding of amino acids}
+\subsection*{Contextualized neighborhood-encoding of amino acids}
 Looking at the average neighborhood-encoded amino acids starting from ESM-2 embeddings and the human proteome (figures \ref{fig:AAtr4} and \ref{fig:AAtr50}), the charged amino acids seem to be grouped vertically by PC 2, roughly dividing the polar and non-polar amino acids, albeit slightly more pronounced for $n = 50$. Also interesting, to see very similar groupings in the PCA plots might indicate that the first four amino acids before and after a residue are the most crucial.
 
 The PCA scatter plots generated from random vectors (figures \ref{fig:AArtr4} and \ref{fig:AArtr50}) show slightly different results as compared to the ones starting from ESM embeddings. These PCAs also capture less variance, which may indicate that encoding biological information/similarities into the vectors beforehand might be useful. For $k = 4$, some typicalities are noticed such as the close grouping of the negatively charged amino acids (D and E) and the consistent triangular grouping of H, L and R. Nonetheless, for $k = 50$ with random vectors, we see results deviating from all the PCA scatter plots of other neighborhood-encoded amino acids, which could mean that a PCA is not able to capture the sparse information for this case or that these vectors might be oversaturated.
 
 \begin{figure}[H]
-    \label{fig:bigfig}
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\linewidth]{4tr_emb}
-        \caption{$n = 4$ from extended ESM-2 embeddings, accounting for 21 \% of the total variance.}
+        \caption{$n = 4$ from projected ESM-2 embeddings, accounting for 21 \% of the total variance.}
         \label{fig:AAtr4}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\linewidth]{50tr_emb}
-        \caption{$n = 50$ from extended ESM-2 embeddings, accounting for 21 \% of the total variance.}
+        \caption{$n = 50$ from projected ESM-2 embeddings, accounting for 21 \% of the total variance.}
         \label{fig:AAtr50}
     \end{subfigure}
     \vspace{10pt} % Add vertical space between rows
@@ -160,12 +155,12 @@ The PCA scatter plots generated from random vectors (figures \ref{fig:AArtr4} an
         \caption{$n = 50$ from random vectors, accounting for 11 \% of the total variance.}
         \label{fig:AArtr50}
     \end{subfigure}
-    \caption{Scatter-plots of the first two principal components of the average amino acid HDVs with neighborhood-information of $n = 4$ and $n = 50$ encoded, learned from the human reference proteome. The top row represents encoded amino acids starting from extended ESM-2 embeddings, and the bottom row represents encoded amino acids starting from random hyperdimensional vectors. The amino acids are annotated and colored based on their chemical property of polarity.}
+    \caption{Scatter-plots of the first two principal components of the average amino acid HDVs with neighborhood-information of $n = 4$ and $n = 50$ encoded, learned from the human reference proteome. The top row represents encoded amino acids starting from projected ESM-2 embeddings, and the bottom row represents encoded amino acids starting from random hyperdimensional vectors. The amino acids are annotated and colored based on their chemical property of polarity.}\label{fig:bigfig}
 \end{figure}
 
-\section{Discussion}
+\section{Discussion}\label{sec:dis3}
 In Rives \textit{et al.} (2011), they conducted a similar experiment with their transformer model~\cite{esm1}. Our results are comparable to theirs, but not as cleanly grouped which is likely due to several factors. For instance, due to the intrinsic stochastic nature of hyperdimensional computing, it is prone to capture some amount of noise. On top of this, it is difficult for dimensionality-reduction methods such as PCA to accurately capture the intricacies of 10,000-dimensional vectors into 2 dimensions. UMAP projections were also made for the resulting vectors of the neighborhood-encoder method, shown in appendix A, but these did not reveal any new information. For specifically the neighborhood-encoder method, the amount of data we used is not comparable to theirs: our method learned from less than 21000 sequences whilst their model was trained on 250 million sequences. They also included sequences originating from all recorded organisms in the UniProt database at that time whilst we confined ourselves to human sequences. Secondly, hyperdimensional vectors have a limited capacity, meaning long-range dependencies of a residue will saturate the hyperdimensional vector depending on the range.
 
 We can predict the angle between a bundled vector and a randomly selected vector from said bundle vector by $\Theta = \arccos({2k \choose k}/2^{2k})$ with $2k+1$ equal to the number of sequences in the class~\cite{sathdv}. This approximation is valid for bipolar/binary vectors in hyperdimensions $(\ge 10000)$. This equation also suggests that an increase in dimensions will not influence the angle. Evaluating this equation by considering random 1001 vectors in a bundled vector, so $k = 500$, results in an angle of $88.6^{\circ}$. This indicates that a vector has a limited capacity: the more vectors we bundle together, the closer the angle will be to $90^{\circ}$ and thus the more dissimilar the bundled vector becomes to its components. This results in the bundled vectors not being representative anymore of a given dataset. This equation assumes that the bundled vector is a bundle of purely random vectors which is not the case for most of our embeddings; however, it provides us a rough idea about the bundling capacity of a hyperdimensional vector warranting further research in this domain.
 
-In the forthcoming two chapters, we will delve into practical case studies that draw upon the methodologies expounded in this chapter, engaging with protein sequence datasets and executing predictive tasks therein. Chapter 4 is focussed on exploring classification tasks employing protein sequence embeddings, wherein we will research the power of hyperdimensional computing, whether or not together with state-of-the-art machine learning techniques. In chapter 5, we shift our focus toward the classification tasks on amino acid vectors by using our neighborhood-encoder method to create contextualized embeddings of amino acids and neural networks to classify these.
+In the forthcoming two chapters, we will delve into practical case studies that draw upon the methodologies expounded in this chapter, engaging with protein sequence datasets and executing predictive tasks therein. Chapter 4 is focussed on exploring classification tasks employing protein sequence embeddings, wherein we will research the power of hyperdimensional computing, whether or not together with established machine learning methods. In chapter 5, we shift our focus toward the classification tasks on amino acid vectors by using our neighborhood-encoder method to create contextualized embeddings of amino acids and neural networks to classify these.
