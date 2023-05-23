@@ -41,7 +41,7 @@ For bipolar vectors, this entails a straightforward element-wise addition. The r
 For binary vectors, the vectors are element-wise bundled based on the majority element. This is no problem if an odd number of input vectors are considered but ambiguity rises when bundling an even set of vectors. This can be solved by setting the element in question randomly.~\cite{binBund} Another possibility is to add another random vector however this may seem to add more unnecessary noise, especially when bundling a low number of vectors. We can also reverse this by an \textit{inverse addition}. For bipolar vectors, this means just multiplying the vector of interest by -1. A binary vector can be flipped bit-wise. These kinds of operations are not directly built into Julia, but are easily done as followed:
 
 \begin{minted}{julia}
-# Adds element-wise bitvectors via based on the majority element.
+# Adds bitvectors element-wise based on the majority element.
 # Random if tied.
 # Reduce function takes another function (here .+)
 # and applies it to all given vectors.
@@ -161,10 +161,10 @@ To get a feel for the operations, assume $A, B, C, X, Y$ and $Z$ to be random 10
 \begin{figure}[h]
     \centering
     \includegraphics[scale = 0.5]{output.png}
-    \caption{10,000 cases of random 10,000-dimensional binary vectors are made and each time implemented following equation~\ref{eqn:ex1}. The resulting Hamming distances between $A$ and $A'$ are then plotted in a histogram.}
+    \caption{10,000 cases of random 10,000-dimensional binary vectors being made by equation~\ref{eqn:ex1}. The resulting Hamming distances between $A$ and $A'$ are then plotted in a histogram.}
     \label{fig:exm1}
 \end{figure}
-We see that we can retrieve a lot of information with most of the Hamming distances centering around 0.25. Notice that two completely random HDVs would have a distance close to 1 just by stochastics. A Hamming distance of 0 would mean that we retrieved all bits of A correctly, which is impossible in this model due to the consideration of noise. Although we work with a very constrained model, vector A is roughly 75 \% retrievable and the calculations are very efficient as all of these can be completed in less than 2 seconds on a laptop. This same experiment was done with random bipolar 10,000-dimensional vectors and it performs slightly slower as expected but retained the accuracy.
+We see that we can retrieve a lot of information with most of the Hamming distances centering around 0.25. Due to the high-dimensional space and thus its robustness, the distances are very consistent. Notice that two completely random HDVs would have a distance close to 1 just by stochastics. A Hamming distance of 0 would mean that we retrieved all bits of A correctly, which is impossible in this model due to the consideration of noise. Although we work with a very constrained model, vector A is roughly 75 \% retrievable and the calculations are very efficient as all of these can be completed in less than 2 seconds on a laptop. This same experiment was done with random bipolar 10,000-dimensional vectors and it performs slightly slower as expected but retained the accuracy.
 \section{Examples of hyperdimensional computing with real datasets}
 \label{sec:example}
 Now, the power of these simple operations will be demonstrated by applying them to a couple of relatively small real datasets.

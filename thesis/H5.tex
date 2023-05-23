@@ -1,4 +1,5 @@
 \chapter[Methods for amino acid-level predictions]{Hyperdimensional computing methods for\\amino acid-level\\predictions}
+\section{Introduction}
 As discussed in section~\ref{ssec:nlp}, state-of-the-art protein language models primarily rely on transformer-based architectures to learn representations of protein sequences and amino acids in the context of other amino acids. These models have demonstrated their effectiveness in various applications, such as protein function prediction and protein-protein interaction prediction, by capturing complex patterns in amino acid sequences. Moreover, these models are also capable of making detailed predictions at the amino acid level, such as predicting secondary structure. This involves determining local three-dimensional structures of regions within a protein, such as alpha-helices and beta-sheets, based on the sequence of amino acids. This capability further extends their utility in understanding protein structure and function. However, these models are computationally intensive and may be less suitable for certain tasks or scenarios where computational resources are limited.
 
 In section~\ref{sssec:trans}, we explored the idea of encoding information from a residue's neighborhood into a hyperdimensional vector that represents the residue and its surroundings. This approach allows us to capture local sequence information and can serve as an effective encoding scheme for amino acids. To evaluate the effectiveness of this encoding method, we will employ it as an input for several perceptron-based models.
@@ -9,8 +10,10 @@ As single-layer perceptrons can only solve linearly separable problems, research
 
 By combining the residue neighborhood encoding method with perceptron-based models, we could develop more computationally efficient alternatives to state-of-the-art transformer-based models. These models may provide valuable insights into protein sequences and amino acids while being more suitable for scenarios with limited computational resources. 
 
+The aim of this chapter is to design and implement a simple perceptron-based neural network that utilizes hyperdimensional vectors of residues in a protein sequence as inputs. The goal is to train the network to discern and learn the secondary structure of these residues based on their surrounding counterparts. Ultimately, this should enable our model to accurately and efficiently predict the secondary structures of residues in protein sequences whose structure is unknown.
+
 \section{Methods}
-Our objective is to build a straightforward perceptron-based neural network that takes as input a hyperdimensional vector, in particular a neighborhood-encoded amino acid vector made as described in section~\ref{sssec:trans}. It should then output the amino acid's secondary structure, either 3- or 8-state as shown in figure~\cite{fig:pipe2}.
+We built straightforward perceptron-based neural networks that take as input a hyperdimensional vector, in particular a neighborhood-encoded amino acid vector made as described in section~\ref{sssec:trans}. It should then output the amino acid's secondary structure, either 3- or 8-state as shown in figure~\cite{fig:pipe2}.
 
 \begin{figure}[H]
     \centering
@@ -93,25 +96,6 @@ Figure~\ref{fig:main8e} presents the outcome of the training procedure. In contr
     \label{fig:main8e}
   \end{figure}
 
-In order to benchmark our study against the capabilities of state-of-the-art protein language models, we collected the available results of other protein language models on similar experiments. The models include ESM-1b~\cite{esm}, NetSurfP 2.0~\cite{netsurf}, its successor NetSurfP 3.0~\cite{netsurf3} and ProtTrans' best-performing model; ProtT5-XL-U50~\cite{prottrans}. ESM-1b is a model by Meta AI, trained on a large corpus of approximately 86 billion amino acid residues. It consists of around 670 million parameters and utilizes a transformer architecture together with evolutionary data. NetsurfP 2.0 and its successor NetSurf 3.0 are models comprising convolutional neural network (CNN) and bidirectional long short-term (biLSTM) layers. Despite not relying on a transformer-based architecture and having been trained on a comparatively smaller dataset, they exhibit state-of-the-art performance. The distinction between these two methods lies in their input configurations. ProtT5-XL-U50 is a large transformer-based model comprising 3 billion parameters, trained on UniRef50 which comprises roughly 45 million sequences~\cite{uniref}.
-
-\begin{table}[h]
-    \caption{Accuracies of secondary structure classification of state-of-the-art protein language models. Tested on 3 and 8 secondary structure classifications of the CASP12 and CB513 dataset.}
-    \label{tab:casp3}
-    \centering
-    \begin{tabular}{lcc|cc}
-        \toprule
-        \textbf{Accuracy} & \multicolumn{2}{c|}{CASP12} & \multicolumn{2}{c|}{CB513}\\
-        & ss3 & ss8 & ss3 & ss8\\
-        \midrule
-        \textbf{ESM-1b} & 76.9 & 83.9 & 66.0 & 70.2\\
-        \textbf{NetSurfP 2.0} & 82.0 & 84.5 & 66.9 & 71.3\\
-        \textbf{NetSurfP 3.0} & 79.1 & 84.5 & 66.9 & 71.1\\
-        \textbf{ProtT5-XL-U50} & 77.5 & 86.2 & 70.5 & 74.5\\
-        \bottomrule
-    \end{tabular}
-  \end{table}
-
 The fully trained 10-layer MLP models were evaluated on the test datasets with the results summarized in table~\ref{tab:casp} and table~\ref{tab:casp2}. To validate our findings, we also generated a randomly generated dataset for comparison. Disappointingly, the model's performance on the test data did not surpass its own performance on the randomly generated data, meaning that our model is not able to accurately predict the secondary structure of an amino acid based on its neighborhood-encoding.
 
 \begin{table}[h]
@@ -147,10 +131,29 @@ The fully trained 10-layer MLP models were evaluated on the test datasets with t
 \section{Discussion}
 Our exploration into the use of various perceptron-based neural network models for protein secondary structure prediction has yielded several insights. The overarching observation from our results is that our models have not effectively learned from the data. This suggests a couple of potential areas for improvement.
 
-Firstly, the relative simplicity of our neural network models may be a limiting factor. The high-dimensional sparse vectors that represent our data may require a more complex model to capture the intricate patterns within the data effectively. This could involve exploring more sophisticated architectures, such as deeper networks or alternative structures.
+Firstly, the relative simplicity of our neural network models may be a limiting factor. The high-dimensional sparse vectors that represent our data may require a more complex model to capture the intricate patterns within the data effectively. This could involve exploring more sophisticated architectures, such as deeper networks or alternative architectures. A hyperdimensional computing-based method such as OnlineHD might be an interesting learning method too for later research.
 
-Secondly, the neighborhood-encoding algorithm we employed may require further refinement. The quality of the embeddings produced by this algorithm directly impacts the ability of the model to learn. Optimizing this algorithm to produce more informative or discriminative embeddings could potentially enhance the learning capability of our models.
+Secondly, the neighborhood-encoding algorithm we employed may require further refinement. The quality of the embeddings produced by this algorithm directly impacts the ability of the model to learn. Optimizing this algorithm to produce more informative or discriminative embeddings could potentially enhance the learning capability of our models. As said earlier, there might be a case of oversaturation in the vectors and therefore a loss of information on the complex intricacies in the data since binary vectors were used to encode the data. Interesting avenues might include using real-valued vectors to generate neighborhood-encodings. This algorithm could be coupled with weighted additions to avoid oversaturation of vectors.
 
 Lastly, the size of the training dataset could also be a contributing factor. Given the computational constraints of this study, we were limited in the amount of data we could use for training. However, machine learning models, especially deep neural networks, often benefit from larger datasets. Increasing the size of the training dataset could provide our models with more examples to learn from, potentially improving their performance.
 
-Furthermore, when compared to state-of-the-art protein language models, our models fell short in performance. This underscores the complexity of protein secondary structure prediction and the need for models that can effectively learn from the intricate patterns in the data.
+In order to benchmark our study against the capabilities of state-of-the-art protein language models, we collected the available results of other protein language models on similar experiments. The models include ESM-1b~\cite{esm}, NetSurfP 2.0~\cite{netsurf}, its successor NetSurfP 3.0~\cite{netsurf3} and ProtTrans' best-performing model; ProtT5-XL-U50~\cite{prottrans}. ESM-1b is a model by Meta AI, trained on a large corpus of approximately 86 billion amino acid residues. It consists of around 670 million parameters and utilizes a transformer architecture together with evolutionary data. NetsurfP 2.0 and its successor NetSurf 3.0 are models comprising convolutional neural network (CNN) and bidirectional long short-term (biLSTM) layers. Despite not relying on a transformer-based architecture and having been trained on a comparatively smaller dataset, they exhibit state-of-the-art performance. The distinction between these two methods lies in their input configurations. ProtT5-XL-U50 is a large transformer-based model comprising 3 billion parameters, trained on UniRef50 which comprises roughly 45 million sequences~\cite{uniref}.
+
+\begin{table}[h]
+    \caption{Accuracies of secondary structure classification of state-of-the-art protein language models. Tested on 3 and 8 secondary structure classifications of the CASP12 and CB513 dataset.}
+    \label{tab:casp3}
+    \centering
+    \begin{tabular}{lcc|cc}
+        \toprule
+        \textbf{Accuracy} & \multicolumn{2}{c|}{CASP12} & \multicolumn{2}{c|}{CB513}\\
+        & ss3 & ss8 & ss3 & ss8\\
+        \midrule
+        \textbf{ESM-1b} & 76.9 & 83.9 & 66.0 & 70.2\\
+        \textbf{NetSurfP 2.0} & 82.0 & 84.5 & 66.9 & 71.3\\
+        \textbf{NetSurfP 3.0} & 79.1 & 84.5 & 66.9 & 71.1\\
+        \textbf{ProtT5-XL-U50} & 77.5 & 86.2 & 70.5 & 74.5\\
+        \bottomrule
+    \end{tabular}
+  \end{table}
+
+  When compared to the performance of state-of-the-art protein language models in table~\ref{tab:casp3}, our models fall short in performance. This underscores the complexity of protein secondary structure prediction and the need for models that can effectively learn from the intricate patterns in the data.
