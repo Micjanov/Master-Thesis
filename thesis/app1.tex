@@ -136,92 +136,89 @@ $0.49$ & $0.49$ & $0.49$ & $0.49$ & $0.48$ & $0.5$ & $0.49$ & $0.5$ & $0.48$ & $
 \end{tabular}}
 \end{table}
 \chapter{Additional information on chapter 5}\label{app:chp5}
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{slp_k25_dssp3_loss}
-        \label{fig:subfig}
+    \begin{minipage}[b]{.6\textwidth}
+        \begin{subfigure}[b]{\textwidth}
+        \includegraphics[width=\textwidth]{loss_plot_25_8}
+        \caption{Training losses}
+        \label{fig:loss}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{slp_k25_dssp3_score}
-        \label{fig:subfi}
+    \end{minipage}
+    \\
+    \centering
+    \begin{minipage}[b]{.6\textwidth}
+    \begin{subfigure}[b]{\textwidth}
+        \includegraphics[width=\textwidth]{accuracy_plot_25_8}
+        \caption{Accuracies}
+        \label{fig:accuracy}
     \end{subfigure}
-    
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{slp_k25_dssp8_loss}
-        \label{fig:subf}
+    \end{minipage}
+    \\
+    \centering
+    \begin{minipage}[b]{.6\textwidth}
+    \begin{subfigure}[b]{\textwidth}
+        \includegraphics[width=\textwidth]{f1_plot_25_8}
+        \caption{F1-scores}\label{fig:f1}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{slp_k25_dssp8_score}
-        \label{fig:sub}
-    \end{subfigure}
-    
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{slp_k100_dssp3_loss}
-        \label{fig:su}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{slp_k100_dssp3_score}
-        \label{fig:s}
-    \end{subfigure}
-    
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{slp_k100_dssp8_loss}
-        \label{fig:sg}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{slp_k100_dssp8_score}
-        \label{fig:sh}
-    \end{subfigure}
-    \caption{Performance of training procedure of the SLP on 60 \% of NetSurf 2.0's training data, 0.8-0.2 training-test data split. Tested on 3 and 8 secondary structure classifications (dssp3 and dssp8 respectively) and with different kinds of hyperdimensional embeddings made with neighborhood-encoding ($n = 25$ and $n=100$).}
-    \label{fig:main8}
-  \end{figure}
+    \end{minipage}
+    \caption{(a) cross-entropy losses (b) accuracies (c) F1-scores of all perceptron-based configurations tested. Trained with neighborhood-encodings of 60 \% of the training dataset of NetSurfP 2.0. Here $n=25$ and the secondary structure classification is dssp8-based. Note that the SLP and 1-layer MLP model was evaluated using fewer epochs than their 10-layer counterpart.}\label{fig:she2}
+    \end{figure}
 
-  \begin{figure}[htbp]
-    \centering
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{mlp_k25_dssp3_loss}
-        \label{fig:subfig}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{mlp_k25_dssp3_score}
-        \label{fig:subfi}
-    \end{subfigure}
-    
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{mlp_k25_dssp8_loss}
-        \label{fig:subf}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{mlp_k25_dssp8_score}
-        \label{fig:sub}
-    \end{subfigure}
-    
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{mlp_k100_dssp3_loss}
-        \label{fig:su}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{mlp_k100_dssp3_score}
-        \label{fig:s}
-    \end{subfigure}
-    
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{mlp_k100_dssp8_loss}
-        \label{fig:sg}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{mlp_k100_dssp8_score}
-        \label{fig:sh3}
-    \end{subfigure}
-    \caption{Performance of training procedure of the 1-layer MLP on 60 \% of NetSurf 2.0's training data, 0.8-0.2 training-test data split. Tested on 3 and 8 secondary structure classifications (dssp3 and dssp8 respectively) and with different kinds of hyperdimensional embeddings made with neighborhood-encoding ($n = 25$ and $n=100$).}
-    \label{fig:main83}
-  \end{figure}
+\begin{figure}[H]
+        \centering
+        \begin{minipage}[b]{.6\textwidth}
+            \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=\textwidth]{loss_plot_100_3}
+            \caption{Training losses}
+            \label{fig:loss}
+        \end{subfigure}
+        \end{minipage}
+        \\
+        \centering
+        \begin{minipage}[b]{.6\textwidth}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=\textwidth]{accuracy_plot_100_3}
+            \caption{Accuracies}
+            \label{fig:accuracy}
+        \end{subfigure}
+        \end{minipage}
+        \\
+        \centering
+        \begin{minipage}[b]{.6\textwidth}
+        \begin{subfigure}[b]{\textwidth}
+            \includegraphics[width=\textwidth]{f1_plot_100_3}
+            \caption{F1-scores}\label{fig:f1}
+        \end{subfigure}
+        \end{minipage}
+        \caption{(a) cross-entropy losses (b) accuracies (c) F1-scores of all perceptron-based configurations tested. Trained with neighborhood-encodings of 60 \% of the training dataset of NetSurfP 2.0. Here $n=100$ and the secondary structure classification is dssp3-based. Note that the SLP and 1-layer MLP model was evaluated using fewer epochs than their 10-layer counterpart.}\label{fig:she3}
+        \end{figure}
+
+        \begin{figure}[H]
+            \centering
+            \begin{minipage}[b]{.6\textwidth}
+                \begin{subfigure}[b]{\textwidth}
+                \includegraphics[width=\textwidth]{loss_plot_100_8}
+                \caption{Training losses}
+                \label{fig:loss}
+            \end{subfigure}
+            \end{minipage}
+            \\
+            \centering
+            \begin{minipage}[b]{.6\textwidth}
+            \begin{subfigure}[b]{\textwidth}
+                \includegraphics[width=\textwidth]{accuracy_plot_100_8}
+                \caption{Accuracies}
+                \label{fig:accuracy}
+            \end{subfigure}
+            \end{minipage}
+            \\
+            \centering
+            \begin{minipage}[b]{.6\textwidth}
+            \begin{subfigure}[b]{\textwidth}
+                \includegraphics[width=\textwidth]{f1_plot_100_8}
+                \caption{F1-scores}\label{fig:f1}
+            \end{subfigure}
+            \end{minipage}
+            \caption{(a) cross-entropy losses (b) accuracies (c) F1-scores of all perceptron-based configurations tested. Trained with neighborhood-encodings of 60 \% of the training dataset of NetSurfP 2.0. Here $n=100$ and the secondary structure classification is dssp8-based. Note that the SLP and 1-layer MLP model was evaluated using fewer epochs than their 10-layer counterpart.}\label{fig:she4}
+            \end{figure}
