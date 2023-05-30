@@ -25,7 +25,7 @@ As a baseline level, we use the rudimentary HDC classification technique as seen
 \subsubsection*{XGBoost classifier}
 The baseline hyperdimensional classification method has been compared to a more established method, the XGBoost classifier~\cite{xgboost}. The classification with an XGBoost classifier is done via the default XGBoost classifier from \textit{XGBoost.jl v2.2.5} using the binary hyperdimensional embeddings as an input.
 \subsubsection*{OnlineHD methods}
-Another method we experimented with, is OnlineHD by A. Hernandez-Cano~\textit{et al.}~\cite{onlinehd}. It is an algorithm that expands on the classical hyperdimensional training methods by trying to eliminate model saturation. Instead of naively bundling vectors on top of each other, this algorithm assigns weights to every addition depending on how much new information it adds to the model to prevent class vector saturation. To train the model, assume a new data point $V$ with label $l$ and class vectors $C_{i}$ with each having a label $i$. The cosine similarity of $V$ with every class vector is then calculated as $cos(V, C_{i})$. If $V$ with an actual label $l$ would have been predicted as $l'$, the class vectors will be updated as followed (with learning rate $\eta$ as a tunable hyperparameter):
+Another method we experimented with, is OnlineHD by A. Hernandez-Cano~\textit{et al.}~\cite{onlinehd}. It is an algorithm that expands on the classical hyperdimensional training methods by trying to eliminate model saturation. Instead of naively bundling vectors on top of each other, this algorithm assigns weights to every addition depending on how much new information it adds to the model to prevent class vector saturation. To train the model, assume a new data point $V$ with label $l$ and class vectors $C_{i}$ with each having a label $i$. The cosine similarity of $V$ with every class vector is then calculated (denoted as $cos(V, C_{i})$ with $i$ being a label). If $V$ with an actual label $l$ would have been predicted as $l'$, the class vectors will be updated as followed (with learning rate $\eta$ as a tunable hyperparameter):
 
 \begin{alignat}{1}
     \label{eqn:onlinehd}
@@ -53,7 +53,7 @@ To follow the training procedure in terms of performance, the dataset is divided
 \subsection*{Embedding of sequences into hyperdimensional vectors}
 There is no visual difference between the PCA plots for the sequences embedded \textit{via} the bag-of-words method and the convolutional method, but there is a clear difference between the different starting embeddings as seen in Figure~\ref{fig:phalp_emb}. The binary sequence embeddings from both the bag-of-words method and the convolutional method made with ESM-2 AA embeddings seem to capture more of the variance between the sequences.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
     \centering
     \begin{subfigure}{0.48\textwidth}
         \includegraphics[width=\textwidth]{phalp_bow_rand}
@@ -84,7 +84,7 @@ There is no visual difference between the PCA plots for the sequences embedded \
 
 As with the binary embeddings, PCA of the real-valued sequence embeddings shows no distinction between those made \textit{via} the bag-of-words method and the convolutional method whilst showing a clear difference between the different starting embeddings as seen in Figure 4.3. Similarly, the explained variance is much higher for embeddings made with projected ESM-2 embeddings. However, the PCA method retrieves much more information from real-valued embeddings. From all the PCA scatter plots mentioned, we can estimate by the sparser distribution of the VAL proteins that these would be slightly more diverse in sequence than endolysins.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{phalp_bow_rand_real}
@@ -137,7 +137,7 @@ The scores of the XGBoost classifier with our sequence embeddings are much more 
 
 Comparing the results of the OnlineHD models to the naive additive HDC model, we can see a substantial increase in the performance of this model. The single-pass model seems to have more widely varying results depending on the type of embeddings used. As opposed to the XGBoost classifier, it performs better using bag-of-words embeddings. The model also performs better when trained with embeddings based on projected ESM-2 vectors. Iterative retraining of the model seems to increase its performance significantly, even coming close to the performance of an XGBoost classifier in this case. Further improvement might be found when optimizing the models' parameters. The cross validation procedure takes less than 10 seconds to run for the single-pass model, whilst doing an iterative retraining of the model adds 2 to 3 minutes. This model appears to be a decently performing extension of the rudimentary hyperdimensional classification model for protein classification, whilst still being much more efficient than the commonly used machine learning models. The drawback of the model is that we cannot use hyperefficient bit-operations anymore, which limits its efficiency compared to the binary nature of the additive model.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
     \centering
     \begin{subfigure}{0.48\textwidth}
         \includegraphics[width=\textwidth]{phalp_bow_rand_learning3}
@@ -168,7 +168,7 @@ Comparing the results of the OnlineHD models to the naive additive HDC model, we
 
 To further research the power of OnlineHD, we aim to monitor its training procedure when applied to the PhaLP dataset. We calculate the absolute difference between the cosine similarities, $cos(V, C_{VAL})$ and $cos(V, C_{endo})$, as described in equations 4.3 and 4.4. By observing this metric, we can gain insights into the behavior of the hyperdimensional vectors in the OnlineHD model during training. A possibility to expect is that the difference in cosine similarities increases throughout the training procedure as the model learns to differentiate the two classes. However, these differences don't increase noticeably in this case as shown in Figure~\ref{fig:main2}.
 
-\begin{figure}[htbp]
+\begin{figure}[ht!]
     \centering
     \begin{subfigure}{0.48\textwidth}
         \includegraphics[width=\textwidth]{phalp_bow_rand_learningV}
@@ -226,7 +226,7 @@ Another approach to monitor the training procedure is to track the two class vec
 
 In this case, the VAL vector shows near-consistent weight updates, indicating a high likelihood of the dataset being diverse as the cosine similarities don't seem to decrease. This consistent learning pattern also suggests that the method effectively extracts and learns from the diverse information embedded in the dataset. In general, we see a higher variation in cosine similarities for VAL vectors, which suggests that virion-associated lysins are more diverse in sequence compared to endolysins. This also confirms our earlier findings. We also notice higher overall similarities between the query vectors and the VAL vector when using the BoW-method with projected ESM-2 vectors compared to other embedding methods, which aligns with this model's superior performance. The endolysin vector appears to be updated at a constant rate too, with less variation in similarities. As observed with the VAL vectors, the similarities between the query vectors and the endolysin vector are higher when the embeddings are created using the BoW-method with projected ESM-2 vectors.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
     \centering
     \begin{subfigure}{0.48\textwidth}
         \includegraphics[width=\textwidth]{phalp_bow_rand_score}

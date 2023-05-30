@@ -93,7 +93,7 @@ bind(vectors...) = reduce(.*, vectors)
 The binding operation can also be undone by multiplying with the same vector again. It is its own inverse so that:
 \begin{equation}
     \label{eqn:multpinv}
-    A * A = O
+    A \circ A = O
 \end{equation}
 Where $O$ is a vector containing only zeros. Likewise an ordinary multiplication, this operation is commutative and distributive over additions, meaning that transforming a bundle of concepts with binding is equivalent to binding every element before bundling.
 \begin{equation}
@@ -160,7 +160,7 @@ To get a feel for the operations, assume $A, B, C, X, Y$ and $Z$ to be random 10
 \begin{align}\label{eqn:ex1}
 \begin{split}
     A' &= X \circ D \\
-    &= X * (X \circ A + Y \circ B + Z \circ C) \\
+    &= X \circ (X \circ A + Y \circ B + Z \circ C) \\
     &= \underbrace{X \circ X \circ A}_A + \underbrace{X \circ Y \circ B + X \circ Z \circ C}_\text{noise} \\
     &\approx A
 \end{split}
