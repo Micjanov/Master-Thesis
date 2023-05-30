@@ -1,6 +1,6 @@
 \chapter[Hyperdimensional computing methods for amino acid-levelp redictions]{Hyperdimensional computing methods\\for amino acid-level\\predictions}
 \section{Introduction}
-As discussed in section~\ref{ssec:nlp}, state-of-the-art protein language models primarily rely on transformer-based architectures to learn representations of protein sequences and amino acids in the context of other amino acids~\cite{reveiw}. These models have demonstrated their effectiveness in various applications, such as protein function prediction and protein-protein interaction prediction, by capturing complex patterns in amino acid sequences~\cite{esm2}. Moreover, these models are also capable of making detailed predictions at the amino acid level, such as predicting secondary structure. This involves determining local conformations of regions within a protein, such as alpha-helices and beta-sheets, based on the sequence of amino acids. This capability further extends their utility in understanding protein structure and function. However, these models are computationally intensive and may be less suitable for certain tasks or scenarios where computational resources are limited.
+As discussed in section~\ref{ssec:nlp}, state-of-the-art protein language models primarily rely on transformer-based architectures to learn representations of protein sequences and amino acids in the context of other amino acids~\cite{review}. These models have demonstrated their effectiveness in various applications, such as protein function prediction and protein-protein interaction prediction, by capturing complex patterns in amino acid sequences~\cite{esm2}. Moreover, these models are also capable of making detailed predictions at the amino acid level, such as predicting secondary structure. This involves determining local conformations of regions within a protein, such as alpha-helices and beta-sheets, based on the sequence of amino acids. This capability further extends their utility in understanding protein structure and function. However, these models are computationally intensive and may be less suitable for certain tasks or scenarios where computational resources are limited.
 
 In section~\ref{sssec:trans}, we explored the idea of encoding information from a residue's neighborhood into a hyperdimensional vector that represents the residue and its surroundings. This approach allows us to capture local sequence information and can serve as an effective encoding scheme for amino acids. To evaluate the effectiveness of this encoding method, we will employ it as an input for several perceptron-based models.
 
@@ -85,7 +85,7 @@ In contrast to the SLP and the 1-layer MLP models, the performance of the much d
     \caption{Accuracies of secondary structure classification of state-of-the-art protein language models. Tested on 3 and 8 secondary structure classifications of the CASP12 and CB513 dataset.}
     \label{tab:casp3}
     \centering
-    \begin{tabular}{lcc|cc}
+    \begin{tabular}{l|cc|cc}
         \toprule
         \textbf{Accuracy} & \multicolumn{2}{c|}{CASP12} & \multicolumn{2}{c|}{CB513}\\
         & ss3 & ss8 & ss3 & ss8\\

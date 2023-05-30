@@ -14,11 +14,11 @@
 \subtitle{}
 \author{Michael Fatjanov}
 
-\wordcount{15578} % Fill in the number of words
+\wordcount{15657} % Fill in the number of words
 \studentnr{01917077} % Fill in your student number
 
 \promotor{Prof. dr. Bernard De Baets}
-\copromotor{dr. Michiel Stock}
+\copromotor{dr. ir. Michiel Stock}
 \tutor{Dimitri Boeckaerts}
 
 \degree{master}
@@ -55,9 +55,12 @@
 \usepackage{hyperref}
 \usepackage{makecell}
 \usepackage{outlines}
-\usepackage{booktabs}
+\usepackage{array, booktabs}
 \usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{tabularx}
 \renewcommand\theadfont{\normalsize\bfseries}
+\newcommand{\mybullet}{\makebox[0pt][l]{$\bullet$}}
 
 \setcounter{secnumdepth}{3}
 % ---- ADDITIONAL SETTINGS
@@ -113,8 +116,8 @@
 % ------------ REFERENCES ------------
 % Here you have your bibliography created
 \addcontentsline{toc}{chapter}{Bibliography} %show bibliography in TOC
-\bibliographystyle{unsrtnat}  %apalike,phdbib.bst
-\bibliography{Thesis_bib}
+\bibliographystyle{custom}  %apalike,phdbib.bst
+\bibliography{Thesis_bib.bib}
 % Here you insert your appendices
 \appendix
 \begin{appendices}
