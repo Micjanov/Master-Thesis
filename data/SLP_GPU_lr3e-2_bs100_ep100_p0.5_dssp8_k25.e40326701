@@ -1,6 +1,0 @@
-┌ Error: cuDNN is not available for your platform (x86_64-linux-gnu-libgfortran5-cxx11-libstdcxx29-cuda+local-julia_version+1.7.2)
-└ @ cuDNN ~/.julia/packages/cuDNN/tgAWl/src/cuDNN.jl:167
-[ Info:  started timer at: 2023-05-01T17:10:59.193
-[ Info:        967.497155005s: 16 minutes, 7 seconds, 497 milliseconds
-[ Info:  started timer at: 2023-05-01T17:27:06.847
-[ Info:       4689.744665839s: 1 hour, 18 minutes, 9 seconds, 744 milliseconds
