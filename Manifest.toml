@@ -2,7 +2,7 @@
 
 julia_version = "1.9.0"
 manifest_format = "2.0"
-project_hash = "4fb6f6e38b4ae4b3577d89e0389a7697a3f860f6"
+project_hash = "53ce7ce09c93461655674e76ae0a0241d9b3f298"
 
 [[deps.ANSIColoredPrinters]]
 git-tree-sha1 = "574baf8110975760d391c710b6341da1afa48d8c"
@@ -1777,6 +1777,12 @@ deps = ["InteractiveUtils", "MacroTools"]
 git-tree-sha1 = "5d7e3f4e11935503d3ecaf7186eac40602e7d231"
 uuid = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
 version = "0.9.4"
+
+[[deps.SimulatedAnnealing]]
+deps = ["Parameters", "Statistics"]
+git-tree-sha1 = "60426076ff7a89beb4dff7bf0e16e221f1696727"
+uuid = "119b26b8-39d9-4e2d-8f08-406d7b73be9f"
+version = "0.1.0"
 
 [[deps.SnoopPrecompile]]
 deps = ["Preferences"]
