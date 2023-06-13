@@ -98,7 +98,7 @@
 % proef : Is filled in automatically, depending on the values
 % defined here
 \def\@proef{}
-\def\master{master}
+\def\master{Master}
 \def\bachelor{bachelor}
 
 % richting
@@ -162,8 +162,8 @@
     \@ifundefined{insertpromotor}{
       \ClassError {bwthesis}{You have to specify your promotor}{Seriously, you have a promotor.}
     }{
-      {\fontsize{12}{15} \selectfont Promotors: \insertpromotor ~\& \insertcopromotor}
-      \\{\fontsize{12}{15} \selectfont Supervisor: ir. \inserttutor}
+      {\fontsize{12}{15} \selectfont Supervisors: \insertpromotor ~\& \insertcopromotor}
+      \\{\fontsize{12}{15} \selectfont Tutor: ir. \inserttutor}
     }
     
     
@@ -187,7 +187,7 @@
     \vskip 1em
     
     Dissertation submitted to Ghent University in partial fulfilment of the requirements for the
-    degree of~\@degree~in \@richting .
+    degree of~\@degree~of \@richting .
     
    % Only insert if academic year is specified
     \@ifundefined{insertacademicyear}{
