@@ -138,7 +138,7 @@ hamming(x::BitVector, y::BitVector) = sum(x .!= y)/length(x)
 # Cosine similarity
 cosine(x::Vector, y::Vector) = dot(x, y) / (norm(x) * norm(y))
 \end{minted}
-The results of both of these measurements are summarized in Table~\ref{tab:dist}.
+Several possible outcomes of both of these measurements are summarized in Table~\ref{tab:dist}.
 \begin{table}[h]
     \centering
     \caption{\label{tab:dist}Overview of similarity measurements in HDC depending on the nature of the HDVs}
