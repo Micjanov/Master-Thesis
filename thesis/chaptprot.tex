@@ -7,9 +7,9 @@ The sought-after biochemical and cellular functions of a protein emerge from a c
 \subsection*{State-of-the-art approaches}
 As mentioned earlier, the Edman degradation method was mostly used before to determine the primary structure of a protein. The current state-of-the-art methods for the identification of protein sequences are \mbox{\textit{de novo}} sequencing algorithms applied to tandem mass spectrometry data~\cite{protseq} and allow simultaneous sequencing of thousands of proteins per given sample. Plenty of valuable biological and evolutionary information is already retrievable from just the primary structure \textit{via} traditional tools such as BLAST and MSA as discussed earlier and could provide more information for the prediction of secondary and tertiary structures. However, to cope with the number of recorded protein sequences rising exponentially, far more compute-efficient methods based on multiple sequence alignments had to be developed like PSI-BLAST~\cite{psiblast}, HHblits~\cite{hhblits3} and MMseqs~\cite{mmseqs2}. However, it's important to note that these methods might struggle to handle the continuously growing number of protein sequences stored in databases. As illustrated in Figure~\ref{fig:pdb}b, the UniProt Archive (UniParc) has seen a significant increase in recorded protein sequences, with the count now exceeding half a billion.
 
-\begin{figure}[!ht]
+\begin{figure}[t!]
     \centering
-    \includegraphics[scale = 0.25]{combined_plot_lines.png}
+    \includegraphics[scale = 0.20]{combined_plot_lines.png}
     \caption{Total number of entries in PDB~\cite{pdb} in blue and the total number of entries in UniParc~\cite{uniprot} in red, from 2011 to 2023 as of May 2023. Note the different scales.}
     \label{fig:pdb}
 \end{figure}
